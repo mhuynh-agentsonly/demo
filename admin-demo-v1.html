@@ -123,7 +123,7 @@
 
   /* SPA screen visibility */
   .screen { display: none; }
-  .screen-active { display: block; animation: fade .18s ease-out; }
+  .screen-active { display: block !important; animation: fade .18s ease-out; }
   @keyframes fade { from { opacity: 0; transform: translateY(2px);} to { opacity: 1; transform: none;} }
 
   .nav-link[aria-current="page"] { color: var(--primary); }
@@ -158,19 +158,11 @@
   }
   .tp-cat-cb:checked {
     background: #007460 !important;
-    background-image: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 10px 10px !important;
     border-color: #007460 !important;
-  }
-  .tp-cat-cb:checked::after {
-    content: '';
-    position: absolute;
-    left: 3px;
-    top: 1px;
-    width: 7px;
-    height: 4px;
-    border-left: 2px solid #fff;
-    border-bottom: 2px solid #fff;
-    transform: rotate(-45deg);
   }
   .tp-cat-cb:hover:not(:checked) { border-color: #9CA3AF !important; }
 
@@ -189,7 +181,8 @@
   /* Nav tabs: consistent weight across active / inactive states */
   .hn-link, .hn-link span { font-weight: 500 !important; }
 
-  #atm-format {
+  #atm-format,
+  #atm-modality {
     appearance: none !important;
     -webkit-appearance: none !important;
     background-image: none !important;
@@ -208,6 +201,82 @@
     color: #374151;
   }
 
+  .atm-placeholder {
+    color: #6c7280 !important;
+  }
+
+  #atm-cat-trigger:focus,
+  #atm-cat-trigger:focus-visible,
+  #atm-cat-trigger.is-open,
+  #atm-modality-trigger:focus,
+  #atm-modality-trigger:focus-visible,
+  #atm-modality-trigger.is-open,
+  #atm-format-trigger:focus,
+  #atm-format-trigger:focus-visible,
+  #atm-format-trigger.is-open {
+    border-color: #60cdb1 !important;
+    box-shadow: 0 0 0 3px #c5fcee !important;
+  }
+
+  input[name="atm-proctor"] {
+    appearance: none;
+    -webkit-appearance: none;
+    accent-color: #007460;
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid #6c7280;
+    border-radius: 9999px;
+    background: #fff;
+    display: inline-grid;
+    place-content: center;
+    flex: 0 0 auto;
+    outline: none;
+    transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+  }
+
+  input[name="atm-proctor"]::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    transform: scale(0);
+    background: #007460;
+    transition: transform 140ms ease;
+  }
+
+  input[name="atm-proctor"]:checked {
+    border-color: #007460;
+    background: #fff;
+  }
+
+  input[name="atm-proctor"]:checked::before {
+    transform: scale(1);
+  }
+
+  input[name="atm-proctor"]:focus,
+  input[name="atm-proctor"]:focus-visible {
+    border-color: #007460 !important;
+    outline: 3px solid #c5fcee !important;
+    outline-offset: 2px;
+  }
+
+  input[name="atm-proctor"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .atm-proctor-option {
+    border-radius: 4px;
+    outline: none !important;
+  }
+
+  .atm-proctor-option:focus,
+  .atm-proctor-option:focus-visible,
+  .atm-proctor-option:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
   .skills-center-content {
     padding-left: calc(clamp(24px, 6vw, 85px) - 24px);
     padding-right: calc(clamp(24px, 6vw, 85px) - 24px);
@@ -217,6 +286,39 @@
       padding-left: 0;
       padding-right: 0;
     }
+  }
+
+
+  /* ── Page alignment fix: keep hero text and page content on the same left edge up to 1500px ── */
+  :root {
+    --marketplace-page-x: clamp(24px, 6vw, 85px);
+  }
+
+  @media (max-width: 1500px) {
+    #admin-home > .flex.overflow-hidden > div:first-child,
+    #admin-skills-center > .flex.overflow-hidden > div:first-child,
+    #talent-pool-landing > .flex.overflow-hidden > div:first-child {
+      padding-left: var(--marketplace-page-x) !important;
+      padding-right: clamp(24px, 4vw, 60px) !important;
+    }
+
+    .skills-center-content,
+    .marketplace-aligned-content {
+      padding-left: calc(var(--marketplace-page-x) - 24px) !important;
+      padding-right: calc(var(--marketplace-page-x) - 24px) !important;
+    }
+
+    .tp-search-section {
+      padding-left: var(--marketplace-page-x) !important;
+      padding-right: var(--marketplace-page-x) !important;
+    }
+    #admin-home .home-shortcuts {
+      width: calc(100vw - (var(--marketplace-page-x) * 2)) !important;
+      max-width: none !important;
+      margin-left: calc(-50vw + 50% + var(--marketplace-page-x)) !important;
+      margin-right: var(--marketplace-page-x) !important;
+    }
+
   }
 
   /* Responsive hero — stack vertically on narrow viewports */
@@ -372,7 +474,7 @@
   }
 
 /* ── List category multi-select combobox ── */
-#list-cat-trigger {
+#list-cat-trigger, #list-proctor-trigger {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
@@ -387,12 +489,17 @@
   transition: border-color 0.15s;
   min-width: 140px;
 }
-#list-cat-trigger[aria-expanded="true"] {
-  border-color: #5FCEB1;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(95,206,177,0.15);
+#list-cat-trigger:focus,
+#list-cat-trigger:focus-visible,
+#list-proctor-trigger:focus,
+#list-proctor-trigger:focus-visible,
+#list-cat-trigger[aria-expanded="true"], #list-proctor-trigger[aria-expanded="true"] {
+  border-color: #5FCEB1 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px #c5fcee !important;
 }
-#list-cat-trigger:hover:not([aria-expanded="true"]) { border-color: #9CA3AF; }
+#list-cat-trigger:hover:not([aria-expanded="true"]),
+#list-proctor-trigger:hover:not([aria-expanded="true"]) { border-color: #9CA3AF; }
 
 .list-cat-pill {
   display: inline-flex;
@@ -424,12 +531,12 @@
 }
 .list-cat-pill-x:hover { color: #030712; }
 
-#list-cat-dropdown {
+#list-cat-dropdown, #list-proctor-dropdown {
   position: absolute;
   top: calc(100% + 4px);
   right: 0;
   z-index: 50;
-  min-width: 200px;
+  min-width: 160px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 8px 24px -4px rgba(0,0,0,0.12), 0 4px 8px -4px rgba(0,0,0,0.07);
@@ -453,7 +560,7 @@
 .list-cat-item:hover { background: #F9FAFB; }
 
 /* ── Agent Profile skills category multi-select combobox ── */
-#ap-cat-trigger {
+#ap-cat-trigger, #ap-proctor-trigger {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
@@ -468,19 +575,24 @@
   transition: border-color 0.15s;
   min-width: 140px;
 }
-#ap-cat-trigger[aria-expanded="true"] {
-  border-color: #5FCEB1;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(95,206,177,0.15);
+#ap-cat-trigger:focus,
+#ap-cat-trigger:focus-visible,
+#ap-proctor-trigger:focus,
+#ap-proctor-trigger:focus-visible,
+#ap-cat-trigger[aria-expanded="true"], #ap-proctor-trigger[aria-expanded="true"] {
+  border-color: #5FCEB1 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px #c5fcee !important;
 }
-#ap-cat-trigger:hover:not([aria-expanded="true"]) { border-color: #9CA3AF; }
+#ap-cat-trigger:hover:not([aria-expanded="true"]),
+#ap-proctor-trigger:hover:not([aria-expanded="true"]) { border-color: #9CA3AF; }
 
-#ap-cat-dropdown {
+#ap-cat-dropdown, #ap-proctor-dropdown {
   position: absolute;
   top: calc(100% + 4px);
   right: 0;
   z-index: 50;
-  min-width: 200px;
+  min-width: 160px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 8px 24px -4px rgba(0,0,0,0.12), 0 4px 8px -4px rgba(0,0,0,0.07);
@@ -547,9 +659,12 @@ input.tp-cat-cb:checked {
   text-align: left;
 }
 .tp-dd-trigger:hover { border-color: #9CA3AF; }
+.tp-dd-trigger:focus,
+.tp-dd-trigger:focus-visible,
 .tp-dd-trigger[aria-expanded="true"] {
-  border-color: #5FCEB1;
-  box-shadow: 0 0 0 3px rgba(95,206,177,0.15);
+  border-color: #5FCEB1 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px #c5fcee !important;
 }
 .tp-dd-trigger-label {
   flex: 1;
@@ -704,6 +819,27 @@ input.tp-cat-cb:checked {
 }
 .ap-tab-panel { display: none; }
 .ap-tab-panel.ap-active { display: block; }
+.ap-cred-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 1px solid #6EE7D1;
+  border-radius: 20px;
+  padding: 2px 6px 2px 5px;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.ap-cred-btn:hover {
+  background: #ECFDF5;
+  border-color: #007460;
+  box-shadow: 0 0 0 3px rgba(0,116,96,0.10);
+}
+.ap-cred-btn:active {
+  background: #D1FAE5;
+  box-shadow: none;
+}
 
 /* ── Shortcut card hover CTA ── */
 .shortcut-card .card-cta {
@@ -720,6 +856,41 @@ input.tp-cat-cb:checked {
 .shortcut-card:hover {
   box-shadow: 0 4px 16px -2px rgba(10,13,18,.10), 0 2px 6px -2px rgba(10,13,18,.08);
 }
+
+  /* ATM category cards */
+  .atm-cat-card {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 8px 4px; border: 1.5px solid #E5E7EB; border-radius: 10px;
+    cursor: pointer; background: #fff; font-size: 11px; font-weight: 500;
+    color: #374151; transition: border-color .12s, box-shadow .12s; text-align: center;
+    min-width: 0; width: 100%;
+  }
+  .atm-cat-card:hover:not(:disabled) { border-color: #00b081; background: #f6fffd; }
+  .atm-cat-card.is-selected { border-color: #007460; background: #f6fffd; color: #007460; box-shadow: 0 0 0 1px #007460; }
+  .atm-cat-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  }
+
+  /* Talent Pool landing — typeahead suggestions */
+  .tpl-suggest-panel {
+    position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:40;
+    background:#fff; border:1px solid #E5E7EB; border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,.10); overflow:hidden;
+  }
+  .tpl-suggest-card {
+    display:flex; align-items:center; gap:12px;
+    padding:12px 16px; cursor:pointer; transition:background .1s;
+    border-bottom:1px solid #F3F4F6;
+  }
+  .tpl-suggest-card:last-child { border-bottom:none; }
+  .tpl-suggest-card:hover { background:#F9FAFB; }
+  .tpl-suggest-all {
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    padding:10px 16px; font-size:13px; font-weight:500; color:#007460;
+    cursor:pointer; transition:background .1s;
+  }
+  .tpl-suggest-all:hover { background:#F0FDF9; }
 </style>
 </head>
 <body class="min-h-screen">
@@ -855,7 +1026,7 @@ input.tp-cat-cb:checked {
   </div>
 
   <!-- Shortcut cards -->
-  <div class="flex gap-6" style="max-width:1270px; margin-left:auto; margin-right:auto; margin-top:96px">
+  <div class="home-shortcuts flex gap-6" style="max-width:1270px; margin-left:auto; margin-right:auto; margin-top:96px">
 
     <!-- Card 1: Post updates -->
     <button class="shortcut-card flex-1 rounded-2xl text-left cursor-pointer transition-shadow"
@@ -1075,9 +1246,20 @@ input.tp-cat-cb:checked {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
-        <!-- Category multi-select combobox -->
-        <div class="flex items-center gap-2.5">
-          <span class="text-sm font-medium text-gray-600" style="white-space:nowrap">Category</span>
+        <!-- Filters: Proctored + Category -->
+        <div class="flex items-center gap-2">
+          <div class="relative" id="list-proctor-wrap">
+            <button type="button" id="list-proctor-trigger"
+              aria-haspopup="listbox" aria-expanded="false" aria-controls="list-proctor-dropdown"
+              onclick="event.stopPropagation(); toggleListProcFilter()">
+              <span id="list-proctor-label" style="color:#030712;font-size:14px;font-family:var(--font-sans)">All proctoring</span>
+              <svg id="list-proctor-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;transition:transform 0.15s;margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="list-proctor-dropdown" role="listbox" aria-label="Filter by proctoring" hidden>
+              <div id="list-proctor-options" style="padding:4px 0"></div>
+            </div>
+          </div>
+          <div style="width:1px;height:20px;background:#E5E7EB;flex-shrink:0"></div>
           <div class="relative" id="list-cat-wrap">
             <button type="button" id="list-cat-trigger"
               aria-haspopup="listbox" aria-expanded="false" aria-controls="list-cat-dropdown"
@@ -1096,7 +1278,7 @@ input.tp-cat-cb:checked {
               </div>
             </div>
           </div>
-        </div>
+          </div><!-- /filters wrapper -->
       </div>
 
       <!-- Table -->
@@ -1156,7 +1338,7 @@ input.tp-cat-cb:checked {
             onchange="adminSkillsState.perPage = parseInt(this.value); adminSkillsState.page = 1; renderAdminSkillsList();"
             class="border-input rounded-md border bg-transparent py-1 text-sm cursor-pointer"
             style="height:32px;padding-left:10px;padding-right:28px;outline:none"
-            onfocus="this.style.borderColor='#5FCEB1';this.style.boxShadow='0 0 0 3px rgba(95,206,177,0.15)'"
+            onfocus="this.style.borderColor='#5FCEB1';this.style.boxShadow='0 0 0 3px #c5fcee'"
             onblur="this.style.borderColor='';this.style.boxShadow=''">
             <option value="10">10/page</option>
             <option value="20">20/page</option>
@@ -1313,7 +1495,7 @@ input.tp-cat-cb:checked {
   </div>
 
   <!-- ── Filter bar: custom dropdowns + Apply button ── -->
-  <div style="margin-top:48px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;">
+  <div class="marketplace-aligned-content" style="margin-top:48px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;">
 
     <!-- Country -->
     <div class="tp-dd" id="dd-country" style="min-width:130px">
@@ -1439,7 +1621,7 @@ input.tp-cat-cb:checked {
   </div>
 
   <!-- ── Body content ── -->
-  <div class="tp-body">
+  <div class="tp-body marketplace-aligned-content">
 
     <!-- Empty state card -->
     <div class="tp-empty-card">
@@ -1479,7 +1661,7 @@ input.tp-cat-cb:checked {
   <!-- Breadcrumb -->
   <div class="mb-4 flex items-center gap-3">
     <span class="text-sm font-medium text-primary-700 cursor-pointer hover:underline" onclick="go('talent-pool-landing')">Talent Pool</span>
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.52876 3.5286C5.78911 3.26825 6.21122 3.26825 6.47157 3.5286L10.4716 7.5286C10.7319 7.78895 10.7319 8.21106 10.4716 8.47141L6.47157 12.4714C6.21122 12.7318 5.78911 12.7318 5.52876 12.4714C5.26841 12.2111 5.26841 11.7889 5.52876 11.5286L9.05735 8L5.52876 4.47141C5.26841 4.21106 5.26841 3.78895 5.52876 3.5286Z" fill="#6B7280"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
     <span class="text-sm font-medium text-[#030712]">Search Results</span>
   </div>
 
@@ -1948,6 +2130,50 @@ function applyTalentPoolSearch(query) {
   }, 80);
 }
 
+function renderTplSuggestions(q) {
+  const panel = document.getElementById('tpl-suggest-panel');
+  if (!panel) return;
+  const query = (q || '').trim().toLowerCase();
+  if (!query) { hideTplSuggestions(); return; }
+
+  const matches = AGENTS.filter(a =>
+    a.name.toLowerCase().includes(query) ||
+    (a.country || '').toLowerCase().includes(query) ||
+    (a.passedTests || []).some(t => t.toLowerCase().includes(query))
+  ).slice(0, 3);
+
+  if (!matches.length) { hideTplSuggestions(); return; }
+
+  panel.innerHTML = matches.map(a => {
+    const initials = a.name.split(' ').map(s => s[0]).slice(0, 2).join('');
+    const tick = a.verified ? `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:24px;top:24px" aria-label="Verified"><path d="M9.26684 2.12518C9.38081 2.40081 9.59958 2.61991 9.87504 2.73429L10.841 3.13439C11.1166 3.24857 11.3356 3.46758 11.4498 3.74323C11.564 4.01889 11.564 4.32862 11.4498 4.60427L11.05 5.5695C10.9358 5.84527 10.9356 6.15531 11.0504 6.43096L11.4495 7.39589C11.5061 7.53242 11.5352 7.67877 11.5352 7.82657C11.5353 7.97436 11.5062 8.12072 11.4496 8.25727C11.393 8.39381 11.3101 8.51788 11.2056 8.62237C11.1011 8.72686 10.977 8.80973 10.8404 8.86625L9.8752 9.26606C9.59957 9.38003 9.38047 9.59879 9.26609 9.87426L8.86599 10.8402C8.75181 11.1158 8.53281 11.3348 8.25715 11.449C7.98149 11.5632 7.67177 11.5632 7.39611 11.449L6.43089 11.0492C6.15522 10.9353 5.84561 10.9355 5.57012 11.0499L4.6042 11.4494C4.3287 11.5633 4.01924 11.5632 3.74381 11.4491C3.46838 11.335 3.24949 11.1163 3.13523 10.8409L2.73502 9.87471C2.62105 9.59907 2.40228 9.37998 2.12682 9.26559L1.16091 8.8655C0.885369 8.75137 0.666426 8.5325 0.552203 8.257C0.43798 7.9815 0.437825 7.67192 0.551772 7.39631L0.951581 6.43109C1.06548 6.15542 1.06525 5.84581 0.950934 5.57031L0.551699 4.60371C0.495096 4.46718 0.46595 4.32083 0.465926 4.17303C0.465902 4.02524 0.495001 3.87888 0.551561 3.74234C0.608121 3.60579 0.691033 3.48172 0.795558 3.37723C0.900084 3.27274 1.02417 3.18987 1.16074 3.13335L2.12596 2.73354C2.40136 2.61967 2.62032 2.40118 2.73479 2.12604L3.13489 1.16012C3.24907 0.884465 3.46807 0.665457 3.74373 0.551276C4.01939 0.437095 4.32911 0.437095 4.60477 0.551276L5.56999 0.951085C5.84566 1.06498 6.15527 1.06475 6.43076 0.950438L7.39708 0.551896C7.6727 0.43778 7.98236 0.437803 8.25796 0.551961C8.53357 0.666119 8.75254 0.885065 8.86674 1.16065L9.26696 2.12685L9.26684 2.12518Z" fill="#4F46E5"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.34995 4.42718C8.43011 4.30127 8.45697 4.14867 8.42462 4.00296C8.39227 3.85724 8.30336 3.73035 8.17745 3.65018C8.05153 3.57002 7.89894 3.54316 7.75322 3.57551C7.6075 3.60786 7.48061 3.69677 7.40045 3.82268L5.1977 7.28393L4.1897 6.02393C4.09651 5.90737 3.96083 5.8326 3.81251 5.81608C3.66419 5.79955 3.51538 5.84262 3.39882 5.93581C3.28226 6.029 3.20749 6.16468 3.19096 6.313C3.17444 6.46131 3.21751 6.61012 3.3107 6.72668L4.8107 8.60168C4.8666 8.67165 4.9384 8.72726 5.02012 8.76388C5.10185 8.8005 5.19114 8.81708 5.28056 8.81224C5.36999 8.8074 5.45696 8.78128 5.53426 8.73604C5.61155 8.69081 5.67692 8.62778 5.72495 8.55218L8.34995 4.42718Z" fill="white"/></svg>` : '';
+    const flag = a.country === 'Philippines' ? '🇵🇭' : a.country === 'India' ? '🇮🇳' : a.country === 'Nigeria' ? '🇳🇬' : a.country === 'Kenya' ? '🇰🇪' : a.country === 'Brazil' ? '🇧🇷' : a.country === 'Canada' ? '🇨🇦' : a.country === 'Pakistan' ? '🇵🇰' : a.country === 'Bangladesh' ? '🇧🇩' : '🌍';
+    return `<div class="tpl-suggest-card" onclick="hideTplSuggestions();openAgentProfile('${a.id}')">
+      <div style="position:relative;width:36px;height:36px;flex-shrink:0">
+        <div style="width:36px;height:36px;border-radius:999px;background:#F3F4F6;display:flex;align-items:center;justify-content:center">
+          <span style="color:#6B7280;font-size:14px;font-weight:500">${initials}</span>
+        </div>${tick}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:500;color:#030712;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${a.name}</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:1px">${flag} ${a.country}</div>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>`;
+  }).join('') +
+  `<div class="tpl-suggest-all" onclick="hideTplSuggestions();applyTalentPoolSearch(document.getElementById('tpl-attr-search').value)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    See all results
+  </div>`;
+
+  panel.hidden = false;
+}
+
+function hideTplSuggestions() {
+  const p = document.getElementById('tpl-suggest-panel');
+  if (p) p.hidden = true;
+}
+
 function resetAdminFilters() {
   adminFilters.categories.clear();
   adminFilters.sort = 'score';
@@ -1956,6 +2182,7 @@ function resetAdminFilters() {
   renderAdmin();
 }
 
+const verifiedTickLgSvg = `<svg width="20" height="20" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;right:10px;bottom:24px" aria-label="Verified"><path d="M9.26684 2.12518C9.38081 2.40081 9.59958 2.61991 9.87504 2.73429L10.841 3.13439C11.1166 3.24857 11.3356 3.46758 11.4498 3.74323C11.564 4.01889 11.564 4.32862 11.4498 4.60427L11.05 5.5695C10.9358 5.84527 10.9356 6.15531 11.0504 6.43096L11.4495 7.39589C11.5061 7.53242 11.5352 7.67877 11.5352 7.82657C11.5353 7.97436 11.5062 8.12072 11.4496 8.25727C11.393 8.39381 11.3101 8.51788 11.2056 8.62237C11.1011 8.72686 10.977 8.80973 10.8404 8.86625L9.8752 9.26606C9.59957 9.38003 9.38047 9.59879 9.26609 9.87426L8.86599 10.8402C8.75181 11.1158 8.53281 11.3348 8.25715 11.449C7.98149 11.5632 7.67177 11.5632 7.39611 11.449L6.43089 11.0492C6.15522 10.9353 5.84561 10.9355 5.57012 11.0499L4.6042 11.4494C4.3287 11.5633 4.01924 11.5632 3.74381 11.4491C3.46838 11.335 3.24949 11.1163 3.13523 10.8409L2.73502 9.87471C2.62105 9.59907 2.40228 9.37998 2.12682 9.26559L1.16091 8.8655C0.885369 8.75137 0.666426 8.5325 0.552203 8.257C0.43798 7.9815 0.437825 7.67192 0.551772 7.39631L0.951581 6.43109C1.06548 6.15542 1.06525 5.84581 0.950934 5.57031L0.551699 4.60371C0.495096 4.46718 0.46595 4.32083 0.465926 4.17303C0.465902 4.02524 0.495001 3.87888 0.551561 3.74234C0.608121 3.60579 0.691033 3.48172 0.795558 3.37723C0.900084 3.27274 1.02417 3.18987 1.16074 3.13335L2.12596 2.73354C2.40136 2.61967 2.62032 2.40118 2.73479 2.12604L3.13489 1.16012C3.24907 0.884465 3.46807 0.665457 3.74373 0.551276C4.01939 0.437095 4.32911 0.437095 4.60477 0.551276L5.56999 0.951085C5.84566 1.06498 6.15527 1.06475 6.43076 0.950438L7.39708 0.551896C7.6727 0.43778 7.98236 0.437803 8.25796 0.551961C8.53357 0.666119 8.75254 0.885065 8.86674 1.16065L9.26696 2.12685L9.26684 2.12518Z" fill="#4F46E5"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.34995 4.42718C8.43011 4.30127 8.45697 4.14867 8.42462 4.00296C8.39227 3.85724 8.30336 3.73035 8.17745 3.65018C8.05153 3.57002 7.89894 3.54316 7.75322 3.57551C7.6075 3.60786 7.48061 3.69677 7.40045 3.82268L5.1977 7.28393L4.1897 6.02393C4.09651 5.90737 3.96083 5.8326 3.81251 5.81608C3.66419 5.79955 3.51538 5.84262 3.39882 5.93581C3.28226 6.029 3.20749 6.16468 3.19096 6.313C3.17444 6.46131 3.21751 6.61012 3.3107 6.72668L4.8107 8.60168C4.8666 8.67165 4.9384 8.72726 5.02012 8.76388C5.10185 8.8005 5.19114 8.81708 5.28056 8.81224C5.36999 8.8074 5.45696 8.78128 5.53426 8.73604C5.61155 8.69081 5.67692 8.62778 5.72495 8.55218L8.34995 4.42718Z" fill="white"/></svg>`;
 const verifiedTickSvg = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:24px;top:24px" aria-label="Verified"><path d="M9.26684 2.12518C9.38081 2.40081 9.59958 2.61991 9.87504 2.73429L10.841 3.13439C11.1166 3.24857 11.3356 3.46758 11.4498 3.74323C11.564 4.01889 11.564 4.32862 11.4498 4.60427L11.05 5.5695C10.9358 5.84527 10.9356 6.15531 11.0504 6.43096L11.4495 7.39589C11.5061 7.53242 11.5352 7.67877 11.5352 7.82657C11.5353 7.97436 11.5062 8.12072 11.4496 8.25727C11.393 8.39381 11.3101 8.51788 11.2056 8.62237C11.1011 8.72686 10.977 8.80973 10.8404 8.86625L9.8752 9.26606C9.59957 9.38003 9.38047 9.59879 9.26609 9.87426L8.86599 10.8402C8.75181 11.1158 8.53281 11.3348 8.25715 11.449C7.98149 11.5632 7.67177 11.5632 7.39611 11.449L6.43089 11.0492C6.15522 10.9353 5.84561 10.9355 5.57012 11.0499L4.6042 11.4494C4.3287 11.5633 4.01924 11.5632 3.74381 11.4491C3.46838 11.335 3.24949 11.1163 3.13523 10.8409L2.73502 9.87471C2.62105 9.59907 2.40228 9.37998 2.12682 9.26559L1.16091 8.8655C0.885369 8.75137 0.666426 8.5325 0.552203 8.257C0.43798 7.9815 0.437825 7.67192 0.551772 7.39631L0.951581 6.43109C1.06548 6.15542 1.06525 5.84581 0.950934 5.57031L0.551699 4.60371C0.495096 4.46718 0.46595 4.32083 0.465926 4.17303C0.465902 4.02524 0.495001 3.87888 0.551561 3.74234C0.608121 3.60579 0.691033 3.48172 0.795558 3.37723C0.900084 3.27274 1.02417 3.18987 1.16074 3.13335L2.12596 2.73354C2.40136 2.61967 2.62032 2.40118 2.73479 2.12604L3.13489 1.16012C3.24907 0.884465 3.46807 0.665457 3.74373 0.551276C4.01939 0.437095 4.32911 0.437095 4.60477 0.551276L5.56999 0.951085C5.84566 1.06498 6.15527 1.06475 6.43076 0.950438L7.39708 0.551896C7.6727 0.43778 7.98236 0.437803 8.25796 0.551961C8.53357 0.666119 8.75254 0.885065 8.86674 1.16065L9.26696 2.12685L9.26684 2.12518Z" fill="#4F46E5"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.34995 4.42718C8.43011 4.30127 8.45697 4.14867 8.42462 4.00296C8.39227 3.85724 8.30336 3.73035 8.17745 3.65018C8.05153 3.57002 7.89894 3.54316 7.75322 3.57551C7.6075 3.60786 7.48061 3.69677 7.40045 3.82268L5.1977 7.28393L4.1897 6.02393C4.09651 5.90737 3.96083 5.8326 3.81251 5.81608C3.66419 5.79955 3.51538 5.84262 3.39882 5.93581C3.28226 6.029 3.20749 6.16468 3.19096 6.313C3.17444 6.46131 3.21751 6.61012 3.3107 6.72668L4.8107 8.60168C4.8666 8.67165 4.9384 8.72726 5.02012 8.76388C5.10185 8.8005 5.19114 8.81708 5.28056 8.81224C5.36999 8.8074 5.45696 8.78128 5.53426 8.73604C5.61155 8.69081 5.67692 8.62778 5.72495 8.55218L8.34995 4.42718Z" fill="white"/></svg>`;
 
 function renderAdmin() {
@@ -1988,7 +2215,7 @@ function renderAdmin() {
   const tdStyle = 'border-bottom:1px solid #E5E7EB';
   body.innerHTML = pageRows.map(a => {
     const initials = a.name.split(' ').map(s => s[0]).slice(0, 2).join('');
-    const tick = a.verified ? verifiedTickSvg : '';
+    const tick = verifiedTickSvg; // show on all agents
     return `
       <tr style="height:72px;cursor:pointer" class="hover:bg-[#F9FAFB]" onclick="openAgentProfile('${a.id}')" title="View ${a.name}'s profile">
         <td class="px-4" style="${tdStyle}">
@@ -2091,25 +2318,25 @@ function changeAdminPerPage(n) {
 /* ---------- ADMIN · SKILLS CENTER (list + form) ---------- */
 const adminSkills = (function seed() {
   return [
-    { id: 'coding-fundamentals',        name: 'Coding Fundamentals',        category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/coding-fund',  threshold: 80, duration: 25, status: 'Published', createdAt: '2026-05-15T10:50:00' },
-    { id: 'customer-service-basics',    name: 'Customer Service Basics',    category: 'Customer service',  typeformUrl: 'https://agentsonly.typeform.com/to/cust-svc',     threshold: 80, duration: 20, status: 'Draft',     createdAt: '2026-05-10T10:48:00' },
-    { id: 'data-labeling-fund',         name: 'Data Labeling Fundamentals', category: 'Data labeling',     typeformUrl: 'https://agentsonly.typeform.com/to/data-label',   threshold: 80, duration: 30, status: 'Published', createdAt: '2026-05-08T08:23:00' },
-    { id: 'english-proficiency',        name: 'English Proficiency',        category: 'Language',          typeformUrl: 'https://agentsonly.typeform.com/to/english-prof', threshold: 80, duration: 15, status: 'Published', createdAt: '2026-05-04T05:24:00' },
-    { id: 'technical-support-tier1',    name: 'Technical Support Tier 1',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t1',  threshold: 80, duration: 25, status: 'Published', createdAt: '2025-08-08T06:12:00' },
-    { id: 'python-test',                name: 'Python Test',                category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/python-test',  threshold: 80, duration: 40, status: 'Published', createdAt: '2025-08-08T09:50:00' },
-    { id: 'prompt-eval-script',         name: 'Prompt Evaluation Script',   category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/prompt-eval',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2025-08-08T09:50:00' },
-    { id: 'json-data-annotation',       name: 'JSON Data Annotation',       category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/json-annot',   threshold: 80, duration: 35, status: 'Published', createdAt: '2025-08-08T09:50:00' },
-    { id: 'general-physicians',         name: 'General Physicians',         category: 'Medical',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-phys',     threshold: 80, duration: 20, status: 'Published', createdAt: '2025-08-08T09:50:00' },
-    { id: 'general-lawyers',            name: 'General Lawyers',            category: 'Lawyers',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-law',      threshold: 80, duration: 20, status: 'Published', createdAt: '2025-08-08T09:50:00' },
-    { id: 'gen-ai-labeling',            name: 'Gen AI Labeling',            category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/gen-ai-lab',   threshold: 80, duration: 35, status: 'Published', createdAt: '2025-07-20T14:00:00' },
-    { id: 'sales-fundamentals',         name: 'Sales Fundamentals',         category: 'Sales',             typeformUrl: 'https://agentsonly.typeform.com/to/sales-fund',   threshold: 80, duration: 25, status: 'Published', createdAt: '2025-07-10T09:00:00' },
-    { id: 'technical-support-tier2',    name: 'Technical Support Tier 2',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t2',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2025-06-15T11:30:00' },
-    { id: 'ai-evaluation',              name: 'AI Evaluation',              category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/ai-eval',      threshold: 80, duration: 40, status: 'Published', createdAt: '2025-05-20T08:00:00' },
-    { id: 'content-moderation',         name: 'Content Moderation',         category: 'Data labeling',     typeformUrl: 'https://agentsonly.typeform.com/to/content-mod',  threshold: 80, duration: 20, status: 'Published', createdAt: '2025-04-10T10:00:00' },
+    { id: 'coding-fundamentals',        name: 'Coding Fundamentals',        category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/coding-fund',  threshold: 80, duration: 25, status: 'Published', createdAt: '2026-05-15T10:50:00', proctored: false },
+    { id: 'customer-service-basics',    name: 'Customer Service Basics',    category: 'Customer service',  typeformUrl: 'https://agentsonly.typeform.com/to/cust-svc',     threshold: 80, duration: 20, status: 'Draft',     createdAt: '2026-05-10T10:48:00', proctored: false },
+    { id: 'data-labeling-fund',         name: 'Data Labeling Fundamentals', category: 'Data labeling',     typeformUrl: 'https://agentsonly.typeform.com/to/data-label',   threshold: 80, duration: 30, status: 'Published', createdAt: '2026-05-08T08:23:00', proctored: false },
+    { id: 'english-proficiency',        name: 'English Proficiency',        category: 'Language',          typeformUrl: 'https://agentsonly.typeform.com/to/english-prof', threshold: 80, duration: 15, status: 'Published', createdAt: '2026-05-04T05:24:00', proctored: false },
+    { id: 'technical-support-tier1',    name: 'Technical Support Tier 1',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t1',  threshold: 80, duration: 25, status: 'Published', createdAt: '2025-08-08T06:12:00', proctored: true  },
+    { id: 'python-test',                name: 'Python Test',                category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/python-test',  threshold: 80, duration: 40, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
+    { id: 'prompt-eval-script',         name: 'Prompt Evaluation Script',   category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/prompt-eval',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2025-08-08T09:50:00', proctored: true  },
+    { id: 'json-data-annotation',       name: 'JSON Data Annotation',       category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/json-annot',   threshold: 80, duration: 35, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
+    { id: 'general-physicians',         name: 'General Physicians',         category: 'Medical',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-phys',     threshold: 80, duration: 20, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
+    { id: 'general-lawyers',            name: 'General Lawyers',            category: 'Lawyers',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-law',      threshold: 80, duration: 20, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
+    { id: 'gen-ai-labeling',            name: 'Gen AI Labeling',            category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/gen-ai-lab',   threshold: 80, duration: 35, status: 'Published', createdAt: '2025-07-20T14:00:00', proctored: true  },
+    { id: 'sales-fundamentals',         name: 'Sales Fundamentals',         category: 'Sales',             typeformUrl: 'https://agentsonly.typeform.com/to/sales-fund',   threshold: 80, duration: 25, status: 'Published', createdAt: '2025-07-10T09:00:00', proctored: false },
+    { id: 'technical-support-tier2',    name: 'Technical Support Tier 2',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t2',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2025-06-15T11:30:00', proctored: true  },
+    { id: 'ai-evaluation',              name: 'AI Evaluation',              category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/ai-eval',      threshold: 80, duration: 40, status: 'Published', createdAt: '2025-05-20T08:00:00', proctored: true  },
+    { id: 'content-moderation',         name: 'Content Moderation',         category: 'Data labeling',     typeformUrl: 'https://agentsonly.typeform.com/to/content-mod',  threshold: 80, duration: 20, status: 'Published', createdAt: '2025-04-10T10:00:00', proctored: false },
   ];
 })();
 
-const adminSkillsState = { nameSearch: '', categoryFilters: new Set(), editingId: null, page: 1, perPage: 10, sortDir: 'desc' };
+const adminSkillsState = { nameSearch: '', categoryFilters: new Set(), procFilter: 'All', editingId: null, page: 1, perPage: 10, sortDir: 'desc' };
 
 function renderListCategoryFilter() {
   const optionsEl = document.getElementById('list-cat-options');
@@ -2169,7 +2396,7 @@ function updateListCatTrigger() {
   const MAX_PILLS = 2;
 
   if (sel.length === 0) {
-    pillsEl.innerHTML = `<span style="color:#9CA3AF;font-size:14px;font-family:var(--font-sans)">All categories</span>`;
+    pillsEl.innerHTML = `<span style="color:#030712;font-size:14px;font-family:var(--font-sans)">All categories</span>`;
   } else {
     const visible = sel.slice(0, MAX_PILLS);
     const extra   = sel.length - MAX_PILLS;
@@ -2178,6 +2405,10 @@ function updateListCatTrigger() {
         <button type="button" class="list-cat-pill-x" data-cat="${cat.replace(/"/g,'&quot;')}" onclick="event.stopPropagation(); removeCategoryFilter('${cat.replace(/'/g,"\\'")}')">×</button>
       </span>`
     ).join('') + (extra > 0 ? `<span class="list-cat-pill">+${extra} more</span>` : '');
+  }
+  if (chevron) {
+    const trigger = document.getElementById('list-cat-trigger');
+    chevron.style.transform = trigger && trigger.getAttribute('aria-expanded') === 'true' ? 'rotate(180deg)' : '';
   }
 }
 
@@ -2192,6 +2423,67 @@ function clearListCategoryFilters() {
   adminSkillsState.categoryFilters.clear();
   renderListCategoryFilter();
   updateListCatTrigger();
+  renderAdminSkillsList();
+}
+
+function toggleListProcFilter() {
+  const menu = document.getElementById('list-proctor-dropdown');
+  const trigger = document.getElementById('list-proctor-trigger');
+  if (!menu || !trigger) return;
+  const isOpen = !menu.hidden;
+  closeAllRowMenus();
+  closeListCatFilter();
+  if (isOpen) { closeListProcFilter(); return; }
+  menu.hidden = false;
+  trigger.setAttribute('aria-expanded', 'true');
+  renderListProcFilter();
+  updateListProcTrigger();
+}
+
+function closeListProcFilter() {
+  const menu = document.getElementById('list-proctor-dropdown');
+  const trigger = document.getElementById('list-proctor-trigger');
+  const chevron = document.getElementById('list-proctor-chevron');
+  if (menu) menu.hidden = true;
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  if (chevron) chevron.style.transform = '';
+}
+
+function renderListProcFilter() {
+  const optionsEl = document.getElementById('list-proctor-options');
+  if (!optionsEl) return;
+  const current = adminSkillsState.procFilter || 'All';
+  const options = [
+    { label: 'All proctoring', value: 'All' },
+    { label: 'Proctored', value: 'Proctored' },
+    { label: 'Not proctored', value: 'Not proctored' },
+  ];
+  const checkSvg = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M15 4.5L6.75 12.75L3 9" stroke="#007460" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  optionsEl.innerHTML = options.map(opt => {
+    const active = current === opt.value;
+    return `<button type="button" role="option" class="list-cat-item" aria-selected="${active}" onclick="event.stopPropagation(); setListProcFilter('${opt.value}'); closeListProcFilter();">
+      <span>${opt.label}</span>${active ? checkSvg : ''}
+    </button>`;
+  }).join('');
+}
+
+function updateListProcTrigger() {
+  const labelEl = document.getElementById('list-proctor-label');
+  const chevron = document.getElementById('list-proctor-chevron');
+  if (!labelEl) return;
+  const labels = { 'All': 'All proctoring', 'Proctored': 'Proctored', 'Not proctored': 'Not proctored' };
+  labelEl.textContent = labels[adminSkillsState.procFilter || 'All'] || 'All proctoring';
+  if (chevron) {
+    const trigger = document.getElementById('list-proctor-trigger');
+    chevron.style.transform = trigger && trigger.getAttribute('aria-expanded') === 'true' ? 'rotate(180deg)' : '';
+  }
+}
+
+function setListProcFilter(value) {
+  adminSkillsState.procFilter = value || 'All';
+  adminSkillsState.page = 1;
+  renderListProcFilter();
+  updateListProcTrigger();
   renderAdminSkillsList();
 }
 
@@ -2214,12 +2506,15 @@ function renderAdminSkillsList() {
   const pagination = document.getElementById('skills-pagination');
   if (!tbody || !empty) return;
   updateListCatTrigger();
+  updateListProcTrigger();
 
   const q = adminSkillsState.nameSearch;
   const selCats = adminSkillsState.categoryFilters;
+  const selProc = adminSkillsState.procFilter || 'All';
   let filtered = adminSkills.filter(s =>
     (!q || s.name.toLowerCase().includes(q)) &&
-    (selCats.size === 0 || selCats.has(s.category))
+    (selCats.size === 0 || selCats.has(s.category)) &&
+    (selProc === 'All' || (selProc === 'Proctored' ? s.proctored === true : s.proctored !== true))
   );
 
   // Sort by createdAt
@@ -2270,7 +2565,7 @@ function renderAdminSkillsList() {
          <button type="button" role="menuitem" class="ellipsis-menu-item"
              onclick="event.stopPropagation(); closeAllRowMenus(); openTakeOfflineModal('${s.id}');">Take offline</button>`
       : `<button type="button" role="menuitem" class="ellipsis-menu-item"
-             onclick="event.stopPropagation(); closeAllRowMenus(); openAdminSkillForm('${s.id}');">Edit</button>
+             onclick="event.stopPropagation(); closeAllRowMenus(); openAddTestEditModal('${s.id}');">Edit</button>
          <button type="button" role="menuitem" class="ellipsis-menu-item"
              onclick="event.stopPropagation(); toggleAdminSkillStatus('${s.id}', 'Published'); closeAllRowMenus();">Publish</button>
          <button type="button" role="menuitem" class="ellipsis-menu-item danger"
@@ -2617,17 +2912,21 @@ function toggleListCatFilter() {
   if (!menu || !trigger) return;
   const isOpen = !menu.hidden;
   closeAllRowMenus();
+  closeListProcFilter();
   if (isOpen) { closeListCatFilter(); return; }
   menu.hidden = false;
   trigger.setAttribute('aria-expanded', 'true');
   renderListCategoryFilter();
+  updateListCatTrigger();
 }
 
 function closeListCatFilter() {
   const menu = document.getElementById('list-cat-dropdown');
   const trigger = document.getElementById('list-cat-trigger');
+  const chevron = document.getElementById('list-cat-chevron');
   if (menu) menu.hidden = true;
   if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  if (chevron) chevron.style.transform = '';
 }
 
 /* ---------- Auto-expand textareas ---------- */
@@ -2708,6 +3007,11 @@ function boot() {
     const reviewModal = document.getElementById('test-review-modal');
     if (reviewModal && !reviewModal.classList.contains('hidden')) { closeTestReview(); return; }
     closeCategoryCombobox();
+    closeListCatFilter();
+    closeListProcFilter();
+    closeAtmDropdown('modality');
+    closeAtmDropdown('format');
+    closeAtmCatCombobox();
     closeAllRowMenus();
   });
 
@@ -2717,7 +3021,11 @@ function boot() {
     if (t && (t.closest && (t.closest('.ellipsis-menu') || t.closest('.ellipsis-trigger')))) return;
     closeAllRowMenus();
     if (t && t.closest && !t.closest('#list-cat-wrap')) closeListCatFilter();
+    if (t && t.closest && !t.closest('#list-proctor-wrap')) closeListProcFilter();
     if (t && t.closest && !t.closest('#ap-cat-wrap')) closeApCatFilter();
+    if (t && t.closest && !t.closest('#ap-proctor-wrap')) closeApProcFilter();
+    if (t && t.closest && !t.closest('#atm-modality-wrap')) closeAtmDropdown('modality');
+    if (t && t.closest && !t.closest('#atm-format-wrap')) closeAtmDropdown('format');
     if (t && t.closest && !t.closest('#atm-cat-wrap')) closeAtmCatCombobox();
     if (t && t.closest && !t.closest('#asf-category-wrap')) {
       closeCategoryCombobox();
@@ -2845,6 +3153,28 @@ const AP_COUNTRY_LANGS = {
 
 const AP_EDU_LEVELS = ["Bachelor's degree","Master's degree","High school diploma","Associate degree","Doctoral degree","Professional certification","Bachelor's degree","Master's degree"];
 const AP_FIELDS = ["Computer Science","Business Administration","Information Technology","Communication","Economics","Marketing","Engineering","Education","Psychology","Healthcare","Data Science","Finance"];
+const AP_DEGREE_TYPES = {
+  "Bachelor's degree": ["Bachelor of Science","Bachelor of Arts","Bachelor of Engineering","Bachelor of Applied Science"],
+  "Master's degree": ["Master of Science","Master of Arts","Master of Engineering","Master of Business Administration"],
+  "Associate degree": ["Associate of Arts","Associate of Science","Associate of Applied Science"],
+  "Doctoral degree": ["Doctor of Philosophy (Ph.D.)","Doctor of Science (D.Sc.)"],
+};
+const AP_FIELD_FULL = {
+  "Computer Science":"Computer Science","Business Administration":"Business Administration",
+  "Information Technology":"Information Technology Management","Communication":"Communications and Media Studies",
+  "Economics":"Economics","Marketing":"Marketing and Consumer Behavior",
+  "Engineering":"Electrical Engineering","Education":"Education and Pedagogy",
+  "Psychology":"Psychology","Healthcare":"Health Sciences",
+  "Data Science":"Data Science and Analytics","Finance":"Finance and Investment Management",
+};
+const AP_INSTITUTIONS = [
+  'University of British Columbia','University of Toronto','McGill University',
+  'Stanford University','Massachusetts Institute of Technology','Carnegie Mellon University',
+  'University of Michigan','Georgia Institute of Technology','Cornell University',
+  'University of Washington','New York University','Arizona State University',
+  'Purdue University','University of California, Berkeley','University of Melbourne',
+];
+const AP_GRAD_YEARS = [2017,2018,2019,2020,2021,2022,2023,2016,2024];
 const AP_AVAILABILITY = ['20 hrs/week','30 hrs/week','40 hrs/week (Full-time)','Part-time flexible','20 hrs/week','40 hrs/week (Full-time)'];
 const AP_COMPANIES = ['Google','Microsoft','Amazon','Accenture','Teleperformance','Concentrix','TTEC','Alorica','Conduent','Sitel Group','IBM','Infosys','Wipro','TCS','Capgemini','HCL Technologies','Cognizant','DXC Technology','Genpact','EXL Service','Sutherland','TaskUs','iQor','Sykes','Foundever'];
 const AP_INDUSTRY = {
@@ -2862,6 +3192,8 @@ const AP_ALL_TESTS = {
   'Customer service':['Customer Service Basics','Customer Service Pro','Support Essentials'],
   'Data labeling':['Data Labeling Fundamentals','Content Moderation','Image Annotation'],
 };
+// Tests that are proctored (require webcam/ID verification)
+const AP_PROCTORED_TESTS = new Set(['Python','Python Test','Prompt Evaluation','JSON Data Annotation','AI Evaluation','Gen AI Labeling','Technical Support Tier 1','Technical Support Tier 2']);
 
 // ── Python test question bank (10 single-choice questions) ──
 const PYTHON_TEST_QUESTIONS = [
@@ -3035,6 +3367,19 @@ function renderAgentProfile(agent) {
   const edu = AP_EDU_LEVELS[idx % AP_EDU_LEVELS.length];
   const field = AP_FIELDS[idx % AP_FIELDS.length];
   const availability = AP_AVAILABILITY[idx % AP_AVAILABILITY.length];
+
+  // Verified education credential (~70% of agents, only for degree-level education)
+  const _eduVerifiable = ["Bachelor's degree","Master's degree","Associate degree","Doctoral degree"].includes(edu);
+  const isEduVerified = _eduVerifiable && ((idx % 10) < 7);
+  let verifiedCred = null;
+  if (isEduVerified) {
+    const degreeOptions = AP_DEGREE_TYPES[edu];
+    const degreeType = degreeOptions[idx % degreeOptions.length];
+    const fieldFull = AP_FIELD_FULL[field] || field;
+    const institution = AP_INSTITUTIONS[idx % AP_INSTITUTIONS.length];
+    const gradYear = AP_GRAD_YEARS[idx % AP_GRAD_YEARS.length];
+    verifiedCred = { degreeType, fieldFull, institution, gradYear };
+  }
   const isTpEmployed = (idx % 3) !== 0;
   const hasPortalAccess = (idx % 4) !== 3;
 
@@ -3048,7 +3393,20 @@ function renderAgentProfile(agent) {
 
   // Companies (3 different per agent via offset)
   const compOff = (idx * 3) % (AP_COMPANIES.length - 3);
-  const companies = AP_COMPANIES.slice(compOff, compOff + 3).join(', ');
+  const companyArr = AP_COMPANIES.slice(compOff, compOff + 3);
+  const companies = companyArr.join(', ');
+
+  // Verified employment history (~60% of agents)
+  const isCompVerified = (idx % 10) < 6;
+  let verifiedCompData = null;
+  if (isCompVerified) {
+    const baseYear = 2015 + (idx % 5);
+    verifiedCompData = [
+      { name: companyArr[0], start: baseYear + 6, end: 'Present' },
+      { name: companyArr[1], start: baseYear + 3, end: baseYear + 6 },
+      { name: companyArr[2], start: baseYear,     end: baseYear + 3 },
+    ];
+  }
 
   // Industry + subject from categories
   const industrySet = new Set();
@@ -3069,9 +3427,9 @@ function renderAgentProfile(agent) {
   // Pinned first 2 tests for all agents
   const pythonPassed = false; // always not passed for demo
   const pythonScore = 30;     // matches modal: 3/10 correct = 30%
-  allTests.push({name:'Python', category:'Coding', status: 'Not passed', result: '30%', date:'05/22/2026'});
+  allTests.push({name:'Python', category:'Coding', status: 'Not passed', result: '30%', date:'05/22/2026', proctored: true});
   const vePassed = true; // always passed for demo
-  allTests.push({name:'Video Editing', category:'Video editing', status: 'Passed', result: '83%', date:'05/15/2026'});
+  allTests.push({name:'Video Editing', category:'Video editing', status: 'Passed', result: '83%', date:'05/15/2026', proctored: false});
   ti = 2;
 
   // Agent's other passed tests (skip Python if already added)
@@ -3079,7 +3437,7 @@ function renderAgentProfile(agent) {
     if (t === 'Python Test' || t === 'Python') return; // already covered
     const cat = Object.keys(AP_ALL_TESTS).find(c => AP_ALL_TESTS[c].includes(t)) || agent.testCategories[0];
     const score = 80 + ((idx + ti * 3) % 18);
-    allTests.push({name:t, category:cat, status:'Passed', result:score+'%', date:testDates[ti % testDates.length]});
+    allTests.push({name:t, category:cat, status:'Passed', result:score+'%', date:testDates[ti % testDates.length], proctored: AP_PROCTORED_TESTS.has(t)});
     ti++;
   });
 
@@ -3089,7 +3447,7 @@ function renderAgentProfile(agent) {
     AP_ALL_TESTS[cat].forEach(t => {
       if (!passedSet.has(t) && notPassedCount < 4 && t !== 'Python Test') {
         const score = 45 + ((idx + ti * 7) % 30);
-        allTests.push({name:t, category:cat, status:'Not passed', result:score+'%', date:testDates[ti % testDates.length]});
+        allTests.push({name:t, category:cat, status:'Not passed', result:score+'%', date:testDates[ti % testDates.length], proctored: AP_PROCTORED_TESTS.has(t)});
         ti++; notPassedCount++;
       }
     });
@@ -3118,8 +3476,11 @@ function renderAgentProfile(agent) {
     {key:'dataLabeling',     label:'Data labeling',      icon: iconData},
   ];
 
-  const chevSvg = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.529 3.529a.75.75 0 011.06 0L10 7.94l3.411-3.411a.75.75 0 111.06 1.06l-4 4a.75.75 0 01-1.06 0l-4-4a.75.75 0 010-1.06z" fill="#6B7280"/></svg>`;
+  const chevSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`;
   const extLinkSvg = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 10.5L10.5 2.5M10.5 2.5H5.5M10.5 2.5V7.5" stroke="#007460" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const skillBadgesHtml = (agent.passedTests || []).map(t =>
+    `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;background:#F3F4F6;color:#374151;font-size:13px;font-weight:400;line-height:18px;white-space:nowrap">${t}</span>`
+  ).join('');
 
   root.innerHTML = `
     <!-- Breadcrumb -->
@@ -3132,7 +3493,10 @@ function renderAgentProfile(agent) {
     </div>
 
     <!-- Page title -->
-    <h1 style="font-size:26px;font-weight:600;color:#030712;line-height:1.2;margin-bottom:20px">${agent.name}</h1>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+      <h1 style="font-size:26px;font-weight:600;color:#030712;line-height:1.2;margin:0">${agent.name}</h1>
+      ${skillBadgesHtml ? `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">${skillBadgesHtml}</div>` : ''}
+    </div>
 
     <!-- Profile card -->
     <div style="background:white;border:1px solid #E5E7EB;border-radius:16px;overflow:hidden;margin-bottom:48px">
@@ -3153,7 +3517,8 @@ function renderAgentProfile(agent) {
         <!-- Section heading + avatar -->
         <div style="font-size:16px;font-weight:600;color:#030712;margin-bottom:20px">Personal info</div>
         <div style="display:flex;align-items:center;gap:18px;margin-bottom:28px">
-          <svg width="80" height="84" viewBox="0 0 128 133" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+          <div style="position:relative;width:92px;height:97px;flex-shrink:0">
+          <svg width="92" height="97" viewBox="0 0 128 133" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
             <defs>
               <filter id="ap-av-dd" x="0" y="5" width="128" height="128" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
@@ -3177,6 +3542,8 @@ function renderAgentProfile(agent) {
             <!-- Initials -->
             <text x="64" y="53" text-anchor="middle" dominant-baseline="middle" fill="#6B7280" font-size="32" font-weight="600" font-family="DM Sans,sans-serif" letter-spacing="-0.5">${initials}</text>
           </svg>
+          ${verifiedTickLgSvg}
+          </div>
         </div>
 
         <!-- 2-col info grid -->
@@ -3243,11 +3610,58 @@ function renderAgentProfile(agent) {
       <div id="ap-panel-experience" style="display:none;padding:32px 24px">
         <div style="font-size:16px;font-weight:600;color:#030712;margin-bottom:20px">Experience</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 40px;margin-bottom:24px">
-          <div><div class="ap-label">Highest education level</div><div class="ap-value">${edu}</div></div>
+          <div>
+            <div class="ap-label">Highest education level</div>
+            <div class="ap-value" style="display:flex;align-items:center;gap:8px">
+              ${edu}
+              ${isEduVerified ? `<button onclick="(function(){var p=document.getElementById('ap-cred-panel');p.style.display=p.style.display==='none'?'block':'none';})()" class="ap-cred-btn" title="Show verified credential">
+                <svg width="13" height="13" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 0.75L7.545 2.115L9.6 1.8L10.2 3.78L12 4.8L11.25 6.75L12 8.7L10.2 9.72L9.6 11.7L7.545 11.385L6 12.75L4.455 11.385L2.4 11.7L1.8 9.72L0 8.7L0.75 6.75L0 4.8L1.8 3.78L2.4 1.8L4.455 2.115Z" fill="#007460"/><path d="M3.75 6.375L5.25 7.875L8.25 4.875" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span style="font-size:11.5px;font-weight:600;color:#007460;letter-spacing:0.01em">Verified</span>
+              </button>` : ''}
+            </div>
+          </div>
           <div><div class="ap-label">Specify agent's field of study</div><div class="ap-value">${field}</div></div>
+          ${isEduVerified && verifiedCred ? `<div style="grid-column:span 2">
+            <div id="ap-cred-panel" style="display:none;background:#FAFFFD;border:1px solid #BDEFE5;border-radius:10px;padding:14px 16px;margin-top:-6px">
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+                <svg width="15" height="15" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 0.75L7.545 2.115L9.6 1.8L10.2 3.78L12 4.8L11.25 6.75L12 8.7L10.2 9.72L9.6 11.7L7.545 11.385L6 12.75L4.455 11.385L2.4 11.7L1.8 9.72L0 8.7L0.75 6.75L0 4.8L1.8 3.78L2.4 1.8L4.455 2.115Z" fill="#007460"/><path d="M3.75 6.375L5.25 7.875L8.25 4.875" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span style="font-size:13px;font-weight:600;color:#007460">Verified Credential</span>
+                <span style="font-size:11px;color:#6B7280;margin-left:2px">Platform-confirmed via institutional records</span>
+              </div>
+              <div style="font-size:14px;font-weight:600;color:#030712">${verifiedCred.degreeType}, ${verifiedCred.fieldFull}</div>
+              <div style="font-size:13px;color:#374151;margin-top:3px">${verifiedCred.institution} &nbsp;·&nbsp; ${verifiedCred.gradYear}</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #DDF8F1">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span style="font-size:12px;color:#065F46;font-weight:500">Certificate on file</span>
+                <span style="flex:1"></span>
+                <span style="font-size:12px;color:#6B7280">Issued ${verifiedCred.gradYear}</span>
+              </div>
+            </div>
+          </div>` : ''}
           <div style="grid-column:span 2">
             <div class="ap-label">Previous companies/organizations agent has worked for</div>
-            <div class="ap-value">${companies}</div>
+            <div class="ap-value" style="display:flex;align-items:center;gap:8px">
+              ${companies}
+              ${isCompVerified ? `<button onclick="(function(){var p=document.getElementById('ap-comp-panel');p.style.display=p.style.display==='none'?'block':'none';})()" class="ap-cred-btn" title="Show verified employment history">
+                <svg width="13" height="13" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 0.75L7.545 2.115L9.6 1.8L10.2 3.78L12 4.8L11.25 6.75L12 8.7L10.2 9.72L9.6 11.7L7.545 11.385L6 12.75L4.455 11.385L2.4 11.7L1.8 9.72L0 8.7L0.75 6.75L0 4.8L1.8 3.78L2.4 1.8L4.455 2.115Z" fill="#007460"/><path d="M3.75 6.375L5.25 7.875L8.25 4.875" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span style="font-size:11.5px;font-weight:600;color:#007460;letter-spacing:0.01em">Verified</span>
+              </button>` : ''}
+            </div>
+            ${isCompVerified && verifiedCompData ? `<div id="ap-comp-panel" style="display:none;background:#FAFFFD;border:1px solid #BDEFE5;border-radius:10px;padding:14px 16px;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+                <svg width="15" height="15" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 0.75L7.545 2.115L9.6 1.8L10.2 3.78L12 4.8L11.25 6.75L12 8.7L10.2 9.72L9.6 11.7L7.545 11.385L6 12.75L4.455 11.385L2.4 11.7L1.8 9.72L0 8.7L0.75 6.75L0 4.8L1.8 3.78L2.4 1.8L4.455 2.115Z" fill="#007460"/><path d="M3.75 6.375L5.25 7.875L8.25 4.875" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span style="font-size:13px;font-weight:600;color:#007460">Verified Employment History</span>
+                <span style="font-size:11px;color:#6B7280;margin-left:2px">Platform-confirmed via employment records</span>
+              </div>
+              ${verifiedCompData.map((c,ci) => `<div style="display:flex;align-items:center;gap:0;${ci > 0 ? 'margin-top:7px;padding-top:7px;border-top:1px solid #F0FDF9' : ''}">
+                <div style="font-size:14px;font-weight:600;color:#030712;flex:1">${c.name}</div>
+                <div style="font-size:13px;color:#374151">${c.start}–${c.end}</div>
+              </div>`).join('')}
+              <div style="display:flex;align-items:center;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #DDF8F1">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                <span style="font-size:12px;color:#065F46;font-weight:500">Employment records on file</span>
+              </div>
+            </div>` : ''}
           </div>
         </div>
 
@@ -3331,7 +3745,7 @@ function renderAgentProfile(agent) {
           </div>
 
           <!-- Outer container -->
-          <div style="border:1px solid #e5e7ea;border-radius:8px;overflow:hidden">
+          <div style="border:1px solid #e5e7ea;border-radius:8px;overflow:visible;position:relative">
 
             <!-- Search row -->
             <div style="padding:12px 16px;border-bottom:1px solid #e5e7ea;background:white">
@@ -3352,7 +3766,19 @@ function renderAgentProfile(agent) {
                   </button>`).join('')}
               </div>
               <div style="display:flex;align-items:center;gap:8px">
-                <span style="font-size:14px;color:#374151;font-weight:500">Category</span>
+                <div style="position:relative" id="ap-proctor-wrap">
+                  <button type="button" id="ap-proctor-trigger"
+                    aria-haspopup="listbox" aria-expanded="false" aria-controls="ap-proctor-dropdown"
+                    onclick="event.stopPropagation(); toggleApProcFilter()">
+                    <span id="ap-proctor-label" style="color:#030712;font-size:14px;font-family:var(--font-sans)">All proctoring</span>
+                    <svg id="ap-proctor-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;transition:transform 0.15s;margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div id="ap-proctor-dropdown" role="listbox" aria-label="Filter by proctoring" hidden>
+                    <div id="ap-proctor-options" style="padding:4px 0"></div>
+                  </div>
+                </div>
+                <div style="width:1px;height:20px;background:#E5E7EB;flex-shrink:0"></div>
+                <div style="display:flex;align-items:center;gap:8px">
                 <div style="position:relative" id="ap-cat-wrap">
                   <button type="button" id="ap-cat-trigger"
                     aria-haspopup="listbox" aria-expanded="false" aria-controls="ap-cat-dropdown"
@@ -3370,14 +3796,17 @@ function renderAgentProfile(agent) {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+                </div><!-- /category inner -->
+              </div><!-- /right filters -->
+            </div><!-- /filter bar -->
 
-            <!-- Table -->
+            <!-- Table (own overflow wrapper so dropdowns above can escape) -->
+            <div style="overflow:hidden;border-radius:0 0 8px 8px">
             <table style="width:100%;border-collapse:collapse">
               <thead>
                 <tr style="background:#F9FAFB;border-bottom:1px solid #E5E7EB">
                   <th style="padding:12px 16px;text-align:left;font-size:12px;font-weight:500;color:#6B7280">Name</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:12px;font-weight:500;color:#6B7280;width:96px">Proctored</th>
                   <th style="padding:12px 16px;text-align:left;font-size:12px;font-weight:500;color:#6B7280">Category</th>
                   <th style="padding:12px 16px;text-align:left;font-size:12px;font-weight:500;color:#6B7280">Status</th>
                   <th style="padding:12px 16px;text-align:left;font-size:12px;font-weight:500;color:#6B7280">Result</th>
@@ -3394,6 +3823,7 @@ function renderAgentProfile(agent) {
               </thead>
               <tbody id="ap-skills-tbody"></tbody>
             </table>
+            </div><!-- /table overflow wrapper -->
 
             <!-- Pagination -->
             <div id="ap-skills-pagination" style="padding:4px 16px 8px;background:white;border-top:1px solid #E5E7EB"></div>
@@ -3410,6 +3840,7 @@ function renderAgentProfile(agent) {
   root._apSkillFilter = 'All';
   root._apSkillSearch = '';
   root._apCatFilters = new Set();
+  root._apProcFilter = 'All';
   root._apPage = 1;
   root._apDateSort = 'desc';
   renderSkillsTestRows(allTests, 'All', '', new Set(), 1);
@@ -3447,6 +3878,15 @@ function apSetSkillFilter(filter) {
     });
   }
   renderSkillsTestRows(root._apAllTests || [], filter, root._apSkillSearch || '', root._apCatFilters || new Set(), 1);
+}
+
+function apSetProcFilter(filter) {
+  const root = document.getElementById('ap-root');
+  if (!root) return;
+  root._apProcFilter = filter;
+  root._apPage = 1;
+  updateApProcTrigger();
+  renderSkillsTestRows(root._apAllTests || [], root._apSkillFilter || 'All', root._apSkillSearch || '', root._apCatFilters || new Set(), 1);
 }
 
 function toggleApCatFilter() {
@@ -3529,7 +3969,7 @@ function updateApCatTrigger() {
   const MAX_PILLS = 2;
 
   if (sel.length === 0) {
-    pillsEl.innerHTML = `<span style="color:#9CA3AF;font-size:14px;font-family:var(--font-sans)">All categories</span>`;
+    pillsEl.innerHTML = `<span style="color:#030712;font-size:14px;font-family:var(--font-sans)">All categories</span>`;
   } else {
     const visible = sel.slice(0, MAX_PILLS);
     const extra = sel.length - MAX_PILLS;
@@ -3561,6 +4001,53 @@ function clearApCatFilters() {
   renderSkillsTestRows(root._apAllTests || [], root._apSkillFilter || 'All', root._apSkillSearch || '', root._apCatFilters, 1);
 }
 
+function toggleApProcFilter() {
+  const menu = document.getElementById('ap-proctor-dropdown');
+  const trigger = document.getElementById('ap-proctor-trigger');
+  if (!menu || !trigger) return;
+  if (!menu.hidden) { closeApProcFilter(); return; }
+  menu.hidden = false;
+  trigger.setAttribute('aria-expanded', 'true');
+  const chevron = document.getElementById('ap-proctor-chevron');
+  if (chevron) chevron.style.transform = 'rotate(180deg)';
+  renderApProcFilter();
+}
+
+function closeApProcFilter() {
+  const menu = document.getElementById('ap-proctor-dropdown');
+  const trigger = document.getElementById('ap-proctor-trigger');
+  const chevron = document.getElementById('ap-proctor-chevron');
+  if (menu) menu.hidden = true;
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  if (chevron) chevron.style.transform = '';
+}
+
+function renderApProcFilter() {
+  const optionsEl = document.getElementById('ap-proctor-options');
+  if (!optionsEl) return;
+  const root = document.getElementById('ap-root');
+  const current = root ? (root._apProcFilter || 'All') : 'All';
+  const options = ['All proctoring', 'Proctored', 'Not proctored'];
+  const values  = ['All',            'Proctored', 'Not proctored'];
+  const checkSvg = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" style="flex-shrink:0"><path d="M15 4.5L6.75 12.75L3 9" stroke="#007460" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  optionsEl.innerHTML = options.map((label, i) => {
+    const val = values[i];
+    const active = current === val;
+    return `<button type="button" role="option" class="list-cat-item" aria-selected="${active}" onclick="event.stopPropagation(); apSetProcFilter('${val}'); closeApProcFilter();">
+      <span>${label}</span>${active ? checkSvg : ''}
+    </button>`;
+  }).join('');
+}
+
+function updateApProcTrigger() {
+  const labelEl = document.getElementById('ap-proctor-label');
+  if (!labelEl) return;
+  const root = document.getElementById('ap-root');
+  const current = root ? (root._apProcFilter || 'All') : 'All';
+  const labels = { 'All': 'All proctoring', 'Proctored': 'Proctored', 'Not proctored': 'Not proctored' };
+  labelEl.textContent = labels[current] || 'All proctoring';
+}
+
 function apFilterSkillTests(search) {
   const root = document.getElementById('ap-root');
   if (!root) return;
@@ -3578,11 +4065,14 @@ function renderSkillsTestRows(tests, filter, search, catFilter, page) {
   const PAGE_SIZE = 10;
 
   const dateSort = root ? (root._apDateSort || 'desc') : 'desc';
+  const procFilter = root ? (root._apProcFilter || 'All') : 'All';
   const parseDate = d => { const [m,dd,y] = (d||'').split('/'); return new Date(+y,+m-1,+dd); };
   const catSet = catFilter instanceof Set ? catFilter : new Set();
 
   let rows = tests;
   if (filter && filter !== 'All') rows = rows.filter(t => t.status === filter);
+  if (procFilter === 'Proctored')     rows = rows.filter(t => t.proctored === true);
+  if (procFilter === 'Not proctored') rows = rows.filter(t => t.proctored !== true);
   if (catSet.size > 0) rows = rows.filter(t => catSet.has(t.category));
   if (q) rows = rows.filter(t => t.name.toLowerCase().includes(q) || t.category.toLowerCase().includes(q));
   rows = [...rows].sort((a,b) => {
@@ -3598,7 +4088,7 @@ function renderSkillsTestRows(tests, filter, search, catFilter, page) {
   const pageRows = rows.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   if (!pageRows.length) {
-    tbody.innerHTML = `<tr><td colspan="5" style="padding:28px;text-align:center;font-size:14px;color:#6B7280">No tests found</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="padding:28px;text-align:center;font-size:14px;color:#6B7280">No tests found</td></tr>`;
     renderApPagination(0, 1, 1);
     return;
   }
@@ -3617,6 +4107,7 @@ function renderSkillsTestRows(tests, filter, search, catFilter, page) {
     const nameCell = t.name;
     return `<tr style="${trStyle}" ${trAttrs}>
       <td style="padding:13px 16px;font-size:14px;color:#030712;font-weight:500;${tdBorder}">${nameCell}</td>
+      <td style="padding:13px 16px;font-size:14px;color:#374151;${tdBorder}">${t.proctored ? 'Yes' : 'No'}</td>
       <td style="padding:13px 16px;font-size:14px;color:#374151;${tdBorder}">${t.category}</td>
       <td style="padding:13px 16px;${tdBorder}">
         <span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;background:${passed?'#E9FEF9':'#F3F4F6'};color:${passed?'#007460':'#374151'};font-size:12px;font-weight:500">
@@ -3893,26 +4384,50 @@ function openTestReview(testName, agentId) {
 
 // ── Add Test Modal ────────────────────────────────────────────────────────────
 const ATM_CATEGORIES = ['Coding','Customer service','Video editing','Communication','Sales','Data analysis','Writing','Language','Operations','General'];
+const ATM_MODALITIES = [
+  'Multimodal chat',
+  'Prompt and response generation',
+  'LLM response evaluation',
+  'Image',
+  'Video',
+  'Maps',
+  'Large format imagery',
+  'Medical imagery (DICOM)',
+  'Audio',
+  'Text',
+  'Chat logs',
+  'Documents',
+  'HTML',
+];
 const ATM_FORMATS    = ['Multiple Choice Questionnaire','Video Submission','Written Assessment','Coding Challenge','Practical Task'];
 
 let _atmMethod = 'ai';
 let _atmViewMode = false;
+let _atmEditingId = null;
 
 function openAddTestModal() {
   const modal = document.getElementById('add-test-modal');
   if (!modal) return;
   _atmViewMode = false;
+  _atmEditingId = null;
   setAddTestModalViewMode(false);
   const title = document.getElementById('atm-title');
   const subtitle = document.getElementById('atm-subtitle');
   if (title) title.textContent = 'Add New Skills Test';
-  if (subtitle) subtitle.textContent = 'Configure test parameters, format, and generation method.';
+  if (subtitle) subtitle.textContent = 'Configure test modality, format, and generation method.';
   document.getElementById('atm-name').value = '';
   document.getElementById('atm-ai-prompt').value = '';
   document.getElementById('atm-lms-url').value = '';
   document.getElementById('atm-threshold').value = '80';
-  document.getElementById('atm-format').selectedIndex = 0;
+  setAtmDropdownValue('modality', '');
+  setAtmDropdownValue('format', '');
   document.getElementById('atm-category').value = '';
+  _atmSelectedCat = '';
+  const catLabel = document.getElementById('atm-cat-label');
+  if (catLabel) {
+    catLabel.textContent = 'Select category';
+    catLabel.className = 'text-muted-foreground';
+  }
   document.getElementById('atm-name-counter').textContent = '0 / 100';
   document.querySelectorAll('input[name="atm-proctor"]').forEach(r => { r.checked = r.value === 'no'; });
   document.getElementById('atm-name-err').classList.add('hidden');
@@ -3926,10 +4441,66 @@ function closeAddTestModal() {
   const modal = document.getElementById('add-test-modal');
   if (!modal) return;
   closeAtmCatCombobox();
+  closeAtmDropdown('modality');
+  closeAtmDropdown('format');
   setAddTestModalViewMode(false);
+  _atmEditingId = null;
   modal.classList.add('hidden');
   modal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+}
+
+function openAddTestEditModal(id) {
+  const s = adminSkills.find(x => x.id === id);
+  const modal = document.getElementById('add-test-modal');
+  if (!s || !modal) return;
+  _atmViewMode = false;
+  _atmEditingId = id;
+  setAddTestModalViewMode(false);
+
+  const title = document.getElementById('atm-title');
+  const subtitle = document.getElementById('atm-subtitle');
+  if (title) title.textContent = 'Edit Skills Test';
+  if (subtitle) subtitle.textContent = 'Update test modality, format, and generation method.';
+
+  document.getElementById('atm-name').value = s.name || '';
+  document.getElementById('atm-name-counter').textContent = (s.name || '').length + ' / 100';
+  document.getElementById('atm-name-err').classList.add('hidden');
+
+  setAtmDropdownValue('format', s.format || 'Multiple Choice Questionnaire');
+  setAtmDropdownValue('modality', s.modality || inferSkillModality(s));
+
+  document.querySelectorAll('input[name="atm-proctor"]').forEach(r => {
+    r.checked = s.proctored === true ? r.value === 'yes' : r.value === 'no';
+  });
+
+  document.getElementById('atm-category').value = s.category || '';
+  _atmSelectedCat = s.category || '';
+  const catLabel = document.getElementById('atm-cat-label');
+  if (catLabel) {
+    catLabel.textContent = s.category || 'Select category';
+    catLabel.className = s.category ? 'text-foreground' : 'text-muted-foreground';
+  }
+
+  document.getElementById('atm-threshold').value = s.threshold || 80;
+  document.getElementById('atm-ai-prompt').value = s.description || '';
+  document.getElementById('atm-lms-url').value = s.typeformUrl || 'https://agentsonly.typeform.com/to/aER43sU';
+  _atmMethod = 'lms';
+  renderTestMethodCards();
+
+  const draft = document.getElementById('atm-draft-btn');
+  const publish = document.getElementById('atm-publish-btn');
+  const cancel = document.getElementById('atm-cancel-btn');
+  if (draft) draft.classList.add('hidden');
+  if (publish) {
+    publish.classList.remove('hidden');
+    publish.textContent = 'Save changes';
+  }
+  if (cancel) cancel.textContent = 'Cancel';
+
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
 }
 
 function selectTestMethodModal(method) {
@@ -3956,6 +4527,7 @@ function openAddTestViewModal(id) {
   const modal = document.getElementById('add-test-modal');
   if (!s || !modal) return;
   _atmViewMode = true;
+  _atmEditingId = null;
   const title = document.getElementById('atm-title');
   const subtitle = document.getElementById('atm-subtitle');
   if (title) title.textContent = 'View Skills Test';
@@ -3965,13 +4537,11 @@ function openAddTestViewModal(id) {
   document.getElementById('atm-name-counter').textContent = (s.name || '').length + ' / 100';
   document.getElementById('atm-name-err').classList.add('hidden');
 
-  const formatEl = document.getElementById('atm-format');
   const format = s.format || 'Multiple Choice Questionnaire';
-  if (formatEl) {
-    const existing = [...formatEl.options].find(opt => opt.value === format || opt.textContent === format);
-    if (!existing) formatEl.add(new Option(format, format));
-    formatEl.value = format;
-  }
+  setAtmDropdownValue('format', format);
+
+  const modality = s.modality || inferSkillModality(s);
+  setAtmDropdownValue('modality', modality);
 
   const proctored = s.proctored === true;
   document.querySelectorAll('input[name="atm-proctor"]').forEach(r => { r.checked = proctored ? r.value === 'yes' : r.value === 'no'; });
@@ -3995,7 +4565,7 @@ function openAddTestViewModal(id) {
 
 function setAddTestModalViewMode(isView) {
   _atmViewMode = isView;
-  const disabledIds = ['atm-name','atm-format','atm-ai-prompt','atm-lms-url','atm-threshold','atm-cat-trigger'];
+  const disabledIds = ['atm-name','atm-modality-trigger','atm-format-trigger','atm-ai-prompt','atm-lms-url','atm-threshold','atm-cat-trigger'];
   disabledIds.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -4013,11 +4583,159 @@ function setAddTestModalViewMode(isView) {
   if (cancel) cancel.textContent = isView ? 'Close' : 'Cancel';
   if (draft) draft.classList.toggle('hidden', isView);
   if (publish) publish.classList.toggle('hidden', isView);
+  if (!isView) {
+    if (draft) draft.textContent = 'Save as draft';
+    if (publish) publish.textContent = 'Publish';
+  }
   renderTestMethodCards();
 }
 
-// ATM Category combobox
+function getAtmDropdownOptions(kind) {
+  if (kind === 'modality') return ATM_MODALITIES;
+  if (kind === 'format') return ATM_FORMATS;
+  return [];
+}
+
+function getAtmDropdownPlaceholder(kind) {
+  if (kind === 'modality') return 'Select modality or task type';
+  if (kind === 'format') return 'Select test format';
+  return 'Select option';
+}
+
+function setAtmDropdownValue(kind, value) {
+  const input = document.getElementById('atm-' + kind);
+  const label = document.getElementById('atm-' + kind + '-label');
+  if (!input || !label) return;
+  input.value = value || '';
+  label.textContent = value || getAtmDropdownPlaceholder(kind);
+  label.className = value ? 'text-foreground truncate' : 'atm-placeholder truncate';
+  renderAtmDropdownOptions(kind);
+}
+
+function toggleAtmDropdown(kind) {
+  const trigger = document.getElementById('atm-' + kind + '-trigger');
+  if (_atmViewMode || (trigger && trigger.disabled)) return;
+  const dd = document.getElementById('atm-' + kind + '-dropdown');
+  if (!dd) return;
+  const isOpen = !dd.hidden;
+  closeAtmDropdown(kind === 'modality' ? 'format' : 'modality');
+  closeAtmCatCombobox();
+  if (isOpen) {
+    closeAtmDropdown(kind);
+    return;
+  }
+  dd.hidden = false;
+  if (trigger) {
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.classList.add('is-open');
+    setAtmDropdownTriggerActive(kind, true);
+  }
+  renderAtmDropdownOptions(kind);
+  positionAtmDropdown(kind);
+  setTimeout(() => positionAtmDropdown(kind), 0);
+}
+
+function closeAtmDropdown(kind) {
+  const dd = document.getElementById('atm-' + kind + '-dropdown');
+  if (dd) dd.hidden = true;
+  const trigger = document.getElementById('atm-' + kind + '-trigger');
+  if (trigger) {
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.classList.remove('is-open');
+    setAtmDropdownTriggerActive(kind, false);
+  }
+}
+
+function setAtmDropdownTriggerActive(kind, active) {
+  const trigger = document.getElementById('atm-' + kind + '-trigger');
+  if (!trigger) return;
+  if (active) {
+    trigger.style.setProperty('border-color', '#60cdb1', 'important');
+    trigger.style.setProperty('box-shadow', '0 0 0 3px #c5fcee, 0 1px 2px rgba(10, 13, 18, 0.05)', 'important');
+  } else {
+    trigger.style.removeProperty('border-color');
+    trigger.style.removeProperty('box-shadow');
+  }
+}
+
+function positionAtmDropdown(kind) {
+  const trigger = document.getElementById('atm-' + kind + '-trigger');
+  const dd = document.getElementById('atm-' + kind + '-dropdown');
+  if (!trigger || !dd || dd.hidden) return;
+  const rect = trigger.getBoundingClientRect();
+  const dropdownHeight = dd.offsetHeight || 220;
+  const spaceBelow = window.innerHeight - rect.bottom - 12;
+  const spaceAbove = rect.top - 12;
+  const shouldOpenUp = dropdownHeight > spaceBelow && spaceAbove > spaceBelow;
+  dd.style.position = 'fixed';
+  dd.style.left = rect.left + 'px';
+  dd.style.top = shouldOpenUp
+    ? Math.max(12, rect.top - dropdownHeight - 4) + 'px'
+    : Math.min(rect.bottom + 4, window.innerHeight - dropdownHeight - 12) + 'px';
+  dd.style.width = rect.width + 'px';
+  dd.style.zIndex = '80';
+}
+
+function renderAtmDropdownOptions(kind) {
+  const opts = document.getElementById('atm-' + kind + '-options');
+  const input = document.getElementById('atm-' + kind);
+  if (!opts || !input) return;
+  const selected = input.value || '';
+  opts.innerHTML = getAtmDropdownOptions(kind).map(option => {
+    const isSel = option === selected;
+    const safeOption = JSON.stringify(option).replace(/"/g, '&quot;');
+    return '<button type="button" role="option" aria-selected="' + isSel + '" onclick="selectAtmDropdownOption(' + JSON.stringify(kind).replace(/"/g, '&quot;') + ', ' + safeOption + ')"' +
+      ' class="w-full text-left flex items-center justify-between gap-2 px-3 py-2 text-sm rounded-sm ' +
+      (isSel ? 'text-primary-700 font-medium bg-primary-50' : 'text-foreground hover:bg-secondary') + '">' +
+      '<span class="truncate">' + option + '</span>' +
+      (isSel ? '<svg class="shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : '') +
+      '</button>';
+  }).join('');
+}
+
+function selectAtmDropdownOption(kind, value) {
+  setAtmDropdownValue(kind, value);
+  closeAtmDropdown(kind);
+}
+
+function inferSkillModality(skill) {
+  const category = String(skill && skill.category || '').toLowerCase();
+  const name = String(skill && skill.name || '').toLowerCase();
+  if (category.includes('video') || name.includes('video')) return 'Video';
+  if (category.includes('medical') || name.includes('physician')) return 'Medical imagery (DICOM)';
+  if (category.includes('ai') || name.includes('prompt') || name.includes('evaluation')) return 'LLM response evaluation';
+  if (category.includes('data labeling') || name.includes('annotation')) return 'Image';
+  if (category.includes('customer')) return 'Chat logs';
+  if (category.includes('language') || category.includes('coding') || name.includes('python') || name.includes('json')) return 'Text';
+  return 'Text';
+}
+
+// ATM Category — card grid selection
 let _atmSelectedCat = '';
+
+function selectAtmCatCard(cat) {
+  _atmSelectedCat = cat;
+  const hidden = document.getElementById('atm-category');
+  if (hidden) hidden.value = cat;
+  const customInput = document.getElementById('atm-cat-custom');
+  if (customInput) customInput.value = '';
+  document.querySelectorAll('.atm-cat-card').forEach(card => {
+    card.classList.toggle('is-selected', card.dataset.cat === cat);
+  });
+  if (typeof checkFormValidity === 'function') checkFormValidity();
+}
+
+function onAtmCustomCat(input) {
+  const val = input.value.trim();
+  // Deselect all cards when typing custom
+  document.querySelectorAll('.atm-cat-card').forEach(c => c.classList.remove('is-selected'));
+  _atmSelectedCat = val;
+  const hidden = document.getElementById('atm-category');
+  if (hidden) hidden.value = val;
+  if (typeof checkFormValidity === 'function') checkFormValidity();
+}
+
+// ATM Category combobox (legacy — kept for setAddTestModalViewMode compatibility)
 
 function toggleAtmCatCombobox() {
   const dd = document.getElementById('atm-cat-dropdown');
@@ -4025,17 +4743,36 @@ function toggleAtmCatCombobox() {
   const isOpen = !dd.hidden;
   if (isOpen) {
     dd.hidden = true;
-    document.getElementById('atm-cat-trigger').setAttribute('aria-expanded', 'false');
+    const trigger = document.getElementById('atm-cat-trigger');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.classList.remove('is-open');
+    setAtmCatTriggerActive(false);
   } else {
+    closeAtmDropdown('modality');
+    closeAtmDropdown('format');
     dd.hidden = false;
-    document.getElementById('atm-cat-trigger').setAttribute('aria-expanded', 'true');
+    const trigger = document.getElementById('atm-cat-trigger');
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.classList.add('is-open');
+    setAtmCatTriggerActive(true);
     const search = document.getElementById('atm-cat-search');
     search.value = '';
     renderAtmCatOptions('');
     positionAtmCatDropdown();
     setTimeout(positionAtmCatDropdown, 0);
     document.getElementById('atm-cat-counter').classList.add('hidden');
-    setTimeout(() => search.focus(), 0);
+  }
+}
+
+function setAtmCatTriggerActive(active) {
+  const trigger = document.getElementById('atm-cat-trigger');
+  if (!trigger) return;
+  if (active) {
+    trigger.style.setProperty('border-color', '#60cdb1', 'important');
+    trigger.style.setProperty('box-shadow', '0 0 0 3px #c5fcee, 0 1px 2px rgba(10, 13, 18, 0.05)', 'important');
+  } else {
+    trigger.style.removeProperty('border-color');
+    trigger.style.removeProperty('box-shadow');
   }
 }
 
@@ -4061,7 +4798,11 @@ function closeAtmCatCombobox() {
   const dd = document.getElementById('atm-cat-dropdown');
   if (dd) dd.hidden = true;
   const trigger = document.getElementById('atm-cat-trigger');
-  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  if (trigger) {
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.classList.remove('is-open');
+    setAtmCatTriggerActive(false);
+  }
 }
 
 function renderAtmCatOptions(q) {
@@ -4160,13 +4901,31 @@ function submitAddTestModal(status) {
     return;
   }
   errEl.classList.add('hidden');
+  const modality  = document.getElementById('atm-modality').value;
   const format    = document.getElementById('atm-format').value;
   const category  = document.getElementById('atm-category').value || 'General';
   const threshold = parseInt(document.getElementById('atm-threshold').value, 10) || 80;
   const proctor   = document.querySelector('input[name="atm-proctor"]:checked')?.value === 'yes';
   const url       = _atmMethod === 'lms' ? (document.getElementById('atm-lms-url').value.trim() || '') : 'https://agentsonly.typeform.com/to/new';
+  const editingId = _atmEditingId;
+  if (editingId) {
+    const existing = adminSkills.find(x => x.id === editingId);
+    if (!existing) return;
+    existing.name = name;
+    existing.description = document.getElementById('atm-ai-prompt').value || existing.description || '';
+    existing.modality = modality;
+    existing.format = format;
+    existing.category = category;
+    existing.typeformUrl = url;
+    existing.threshold = threshold;
+    existing.proctored = proctor;
+    closeAddTestModal();
+    renderAdminSkillsList();
+    showToast('Successfully updated "' + name + '" Skills Test', 'success');
+    return;
+  }
   adminSkills.unshift({
-    id: 'skill-' + Date.now(), name, description: '', format, category,
+    id: 'skill-' + Date.now(), name, description: '', modality, format, category,
     typeformUrl: url, threshold, duration: 20, status,
     createdAt: new Date().toISOString(), proctored: proctor,
   });
@@ -4324,7 +5083,7 @@ function toggleAvatarMenu() {
      class="fixed inset-0 z-50 hidden flex items-center justify-center"
      role="dialog" aria-modal="true" aria-labelledby="atm-title" aria-hidden="true">
   <div class="absolute inset-0 bg-gray-600/60" onclick="closeAddTestModal()"></div>
-  <div class="relative bg-white rounded-2xl border border-border shadow-xl flex flex-col w-full max-w-lg mx-4" style="max-height:90vh">
+  <div class="relative bg-white rounded-2xl border border-border shadow-xl flex flex-col w-full max-w-lg mx-4" style="max-height:90vh;max-width:37rem">
 
     <button type="button" onclick="closeAddTestModal()" aria-label="Close"
             class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10">
@@ -4333,11 +5092,11 @@ function toggleAvatarMenu() {
 
     <div class="px-6 pt-6 pb-0 flex-shrink-0">
       <h2 id="atm-title" class="text-xl font-semibold text-foreground mb-1">Add New Skills Test</h2>
-	      <p id="atm-subtitle" class="text-sm text-muted-foreground mb-5">Configure test parameters, format, and generation method.</p>
+	      <p id="atm-subtitle" class="text-sm text-muted-foreground mb-5">Configure test modality, format, and generation method.</p>
       <hr class="border-border -mx-6"/>
     </div>
 
-    <div id="atm-modal-body" class="overflow-y-auto px-6 py-5 flex flex-col gap-5 flex-1" onscroll="positionAtmCatDropdown()">
+    <div id="atm-modal-body" class="overflow-y-auto px-6 py-5 flex flex-col gap-8 flex-1" onscroll="positionAtmCatDropdown(); positionAtmDropdown('modality'); positionAtmDropdown('format')">
 
       <!-- Test Name + 100-char limit -->
       <div>
@@ -4355,30 +5114,58 @@ function toggleAvatarMenu() {
       <div>
         <div class="text-xs font-medium text-foreground mb-2">Is Proctoring Required for this Exam?</div>
         <div class="flex flex-col gap-2">
-          <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-700 select-none">
-            <input type="radio" name="atm-proctor" value="yes" style="accent-color:#007460;width:15px;height:15px">
+          <label class="atm-proctor-option flex items-center gap-2 cursor-pointer text-sm text-gray-700 select-none">
+            <input type="radio" name="atm-proctor" value="yes">
             Yes, require camera monitoring
           </label>
-          <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-700 select-none">
-            <input type="radio" name="atm-proctor" value="no" checked style="accent-color:#007460;width:15px;height:15px">
+          <label class="atm-proctor-option flex items-center gap-2 cursor-pointer text-sm text-gray-700 select-none">
+            <input type="radio" name="atm-proctor" value="no" checked>
             No, open environment submission
           </label>
         </div>
       </div>
 
+      <!-- Data Modality / Task Type -->
+      <div>
+        <label for="atm-modality-trigger" class="block text-xs font-medium text-foreground mb-1.5">Data Modality / Task Type</label>
+        <div class="relative" id="atm-modality-wrap">
+          <input type="hidden" id="atm-modality" name="atm-modality" value="">
+          <button type="button" id="atm-modality-trigger"
+            class="border-input flex h-9 w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"
+            onclick="toggleAtmDropdown('modality')"
+            onfocus="setAtmDropdownTriggerActive('modality', true)"
+            onblur="if(document.getElementById('atm-modality-dropdown').hidden)setAtmDropdownTriggerActive('modality', false)"
+            aria-haspopup="listbox" aria-expanded="false">
+            <span id="atm-modality-label" class="atm-placeholder truncate">Select modality or task type</span>
+            <svg class="shrink-0 text-muted-foreground" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="atm-modality-dropdown"
+            class="bg-popover border border-border rounded-md shadow-md overflow-hidden"
+            hidden>
+            <div id="atm-modality-options" role="listbox" class="py-1 max-h-56 overflow-y-auto"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Test Format -->
       <div>
-        <label for="atm-format" class="block text-xs font-medium text-foreground mb-1.5">Test Format</label>
-        <div class="relative">
-          <select id="atm-format" data-slot="input"
-                  class="placeholder:text-muted-foreground border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)] appearance-none pr-8 cursor-pointer">
-            <option>Multiple Choice Questionnaire</option>
-            <option>Video Submission</option>
-            <option>Written Assessment</option>
-            <option>Coding Challenge</option>
-            <option>Practical Task</option>
-          </select>
-          <svg class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <label for="atm-format-trigger" class="block text-xs font-medium text-foreground mb-1.5">Test Format</label>
+        <div class="relative" id="atm-format-wrap">
+          <input type="hidden" id="atm-format" name="atm-format" value="">
+          <button type="button" id="atm-format-trigger"
+            class="border-input flex h-9 w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"
+            onclick="toggleAtmDropdown('format')"
+            onfocus="setAtmDropdownTriggerActive('format', true)"
+            onblur="if(document.getElementById('atm-format-dropdown').hidden)setAtmDropdownTriggerActive('format', false)"
+            aria-haspopup="listbox" aria-expanded="false">
+            <span id="atm-format-label" class="atm-placeholder truncate">Select test format</span>
+            <svg class="shrink-0 text-muted-foreground" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="atm-format-dropdown"
+            class="bg-popover border border-border rounded-md shadow-md overflow-hidden"
+            hidden>
+            <div id="atm-format-options" role="listbox" class="py-1 max-h-56 overflow-y-auto"></div>
+          </div>
         </div>
       </div>
 
@@ -4421,46 +5208,49 @@ function toggleAvatarMenu() {
         </div>
       </div>
 
-      <!-- Category combobox + Threshold -->
-      <div class="grid grid-cols-2 gap-x-6">
-        <div>
-          <label for="atm-cat-trigger" class="block text-xs font-medium text-foreground mb-1.5">Category</label>
-          <div class="relative" id="atm-cat-wrap">
-            <input type="hidden" id="atm-category" name="atm-category" value="">
-            <button type="button" id="atm-cat-trigger"
-              class="border-input flex h-9 w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"
-              onclick="toggleAtmCatCombobox()" aria-haspopup="listbox" aria-expanded="false">
-              <span id="atm-cat-label" class="text-muted-foreground">Select category</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div id="atm-cat-dropdown"
-              class="bg-popover border border-border rounded-md shadow-md overflow-hidden"
-              hidden>
-              <div class="p-2 border-b border-border">
-                <input type="text" id="atm-cat-search"
-                  placeholder="Search or create category..."
-                  class="border-input flex h-8 w-full rounded-md border bg-transparent px-3 text-sm outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"
-                  oninput="renderAtmCatOptions(this.value); updateAtmCatCounter(this)"
-                  onkeydown="handleAtmCatKey(event)"/>
-                <div id="atm-cat-counter" class="hidden text-right text-xs mt-1 text-muted-foreground"></div>
-              </div>
-              <div id="atm-cat-options" role="listbox" class="py-1 max-h-40 overflow-y-auto"></div>
-              <div id="atm-cat-create-row" class="hidden border-t border-border p-1">
-                <button type="button" id="atm-cat-create-btn"
-                  class="w-full text-left flex items-center gap-2 px-3 py-2 text-sm text-primary-700 hover:bg-primary-50 rounded-sm"
-                  onclick="createAndSelectAtmCat()">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                  Create <span id="atm-cat-create-label" class="font-medium"></span>
-                </button>
-              </div>
+      <!-- Category combobox -->
+      <div>
+        <label for="atm-cat-trigger" class="block text-xs font-medium text-foreground mb-1.5">Category</label>
+        <div class="relative" id="atm-cat-wrap">
+          <input type="hidden" id="atm-category" name="atm-category" value="">
+          <button type="button" id="atm-cat-trigger"
+            class="border-input flex h-9 w-full items-center justify-between gap-2 rounded-md border bg-transparent px-3 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"
+            onclick="toggleAtmCatCombobox()"
+            onfocus="setAtmCatTriggerActive(true)"
+            onblur="if(document.getElementById('atm-cat-dropdown').hidden)setAtmCatTriggerActive(false)"
+            aria-haspopup="listbox" aria-expanded="false">
+            <span id="atm-cat-label" class="text-muted-foreground">Select category</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="atm-cat-dropdown"
+            class="bg-popover border border-border rounded-md shadow-md overflow-hidden"
+            hidden>
+            <div class="p-2 border-b border-border">
+              <input type="text" id="atm-cat-search"
+                placeholder="Search or create category..."
+                class="border-input flex h-8 w-full rounded-md border bg-transparent px-3 text-sm outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"
+                oninput="renderAtmCatOptions(this.value); updateAtmCatCounter(this)"
+                onkeydown="handleAtmCatKey(event)"/>
+              <div id="atm-cat-counter" class="hidden text-right text-xs mt-1 text-muted-foreground"></div>
+            </div>
+            <div id="atm-cat-options" role="listbox" class="py-1 max-h-40 overflow-y-auto"></div>
+            <div id="atm-cat-create-row" class="hidden border-t border-border p-1">
+              <button type="button" id="atm-cat-create-btn"
+                class="w-full text-left flex items-center gap-2 px-3 py-2 text-sm text-primary-700 hover:bg-primary-50 rounded-sm"
+                onclick="createAndSelectAtmCat()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                Create <span id="atm-cat-create-label" class="font-medium"></span>
+              </button>
             </div>
           </div>
         </div>
-        <div>
-          <label for="atm-threshold" class="block text-xs font-medium text-foreground mb-1.5">Passing Threshold (%)</label>
-          <input id="atm-threshold" type="number" min="0" max="100" placeholder="80" data-slot="input"
-                 class="placeholder:text-muted-foreground border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"/>
-        </div>
+      </div>
+
+      <!-- Passing Threshold -->
+      <div>
+        <label for="atm-threshold" class="block text-xs font-medium text-foreground mb-1.5">Passing Threshold (%)</label>
+        <input id="atm-threshold" type="number" min="0" max="100" placeholder="80" data-slot="input"
+               class="placeholder:text-muted-foreground border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-primary-300 focus-visible:[box-shadow:var(--focus-ring-shadow-sm)]"/>
       </div>
 
     </div>

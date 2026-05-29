@@ -1998,7 +1998,7 @@ const AGENTS = (function() {
       : fn[(i - 100) % 100] + ' ' + ln[(i - 100 + 57) % 100];
     const day   = String((i % 28) + 1).padStart(2,'0');
     const month = months[i % months.length];
-    const year  = i < 120 ? '2026' : '2025';
+    const year  = '2026';
     const hour  = String((i % 10) + 8).padStart(2,'0');
     const min   = String((i * 7) % 60).padStart(2,'0');
     const agentCats = cats[i];
@@ -2322,17 +2322,17 @@ const adminSkills = (function seed() {
     { id: 'customer-service-basics',    name: 'Customer Service Basics',    category: 'Customer service',  typeformUrl: 'https://agentsonly.typeform.com/to/cust-svc',     threshold: 80, duration: 20, status: 'Draft',     createdAt: '2026-05-10T10:48:00', proctored: false },
     { id: 'data-labeling-fund',         name: 'Data Labeling Fundamentals', category: 'Data labeling',     typeformUrl: 'https://agentsonly.typeform.com/to/data-label',   threshold: 80, duration: 30, status: 'Published', createdAt: '2026-05-08T08:23:00', proctored: false },
     { id: 'english-proficiency',        name: 'English Proficiency',        category: 'Language',          typeformUrl: 'https://agentsonly.typeform.com/to/english-prof', threshold: 80, duration: 15, status: 'Published', createdAt: '2026-05-04T05:24:00', proctored: false },
-    { id: 'technical-support-tier1',    name: 'Technical Support Tier 1',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t1',  threshold: 80, duration: 25, status: 'Published', createdAt: '2025-08-08T06:12:00', proctored: true  },
-    { id: 'python-test',                name: 'Python Test',                category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/python-test',  threshold: 80, duration: 40, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
-    { id: 'prompt-eval-script',         name: 'Prompt Evaluation Script',   category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/prompt-eval',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2025-08-08T09:50:00', proctored: true  },
-    { id: 'json-data-annotation',       name: 'JSON Data Annotation',       category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/json-annot',   threshold: 80, duration: 35, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
-    { id: 'general-physicians',         name: 'General Physicians',         category: 'Medical',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-phys',     threshold: 80, duration: 20, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
-    { id: 'general-lawyers',            name: 'General Lawyers',            category: 'Lawyers',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-law',      threshold: 80, duration: 20, status: 'Published', createdAt: '2025-08-08T09:50:00', proctored: true  },
-    { id: 'gen-ai-labeling',            name: 'Gen AI Labeling',            category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/gen-ai-lab',   threshold: 80, duration: 35, status: 'Published', createdAt: '2025-07-20T14:00:00', proctored: true  },
-    { id: 'sales-fundamentals',         name: 'Sales Fundamentals',         category: 'Sales',             typeformUrl: 'https://agentsonly.typeform.com/to/sales-fund',   threshold: 80, duration: 25, status: 'Published', createdAt: '2025-07-10T09:00:00', proctored: false },
-    { id: 'technical-support-tier2',    name: 'Technical Support Tier 2',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t2',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2025-06-15T11:30:00', proctored: true  },
-    { id: 'ai-evaluation',              name: 'AI Evaluation',              category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/ai-eval',      threshold: 80, duration: 40, status: 'Published', createdAt: '2025-05-20T08:00:00', proctored: true  },
-    { id: 'content-moderation',         name: 'Content Moderation',         category: 'Data labeling',     typeformUrl: 'https://agentsonly.typeform.com/to/content-mod',  threshold: 80, duration: 20, status: 'Published', createdAt: '2025-04-10T10:00:00', proctored: false },
+    { id: 'technical-support-tier1',    name: 'Technical Support Tier 1',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t1',  threshold: 80, duration: 25, status: 'Published', createdAt: '2026-05-29T06:12:00', proctored: true  },
+    { id: 'python-test',                name: 'Python Test',                category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/python-test',  threshold: 80, duration: 40, status: 'Published', createdAt: '2026-05-27T09:50:00', proctored: true  },
+    { id: 'prompt-eval-script',         name: 'Prompt Evaluation Script',   category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/prompt-eval',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2026-05-25T09:50:00', proctored: true  },
+    { id: 'json-data-annotation',       name: 'JSON Data Annotation',       category: 'Coding',            typeformUrl: 'https://agentsonly.typeform.com/to/json-annot',   threshold: 80, duration: 35, status: 'Published', createdAt: '2026-05-23T09:50:00', proctored: true  },
+    { id: 'general-physicians',         name: 'General Physicians',         category: 'Medical',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-phys',     threshold: 80, duration: 20, status: 'Published', createdAt: '2026-05-21T09:50:00', proctored: true  },
+    { id: 'general-lawyers',            name: 'General Lawyers',            category: 'Lawyers',           typeformUrl: 'https://agentsonly.typeform.com/to/gen-law',      threshold: 80, duration: 20, status: 'Published', createdAt: '2026-05-19T09:50:00', proctored: true  },
+    { id: 'gen-ai-labeling',            name: 'Gen AI Labeling',            category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/gen-ai-lab',   threshold: 80, duration: 35, status: 'Published', createdAt: '2026-05-17T14:00:00', proctored: true  },
+    { id: 'sales-fundamentals',         name: 'Sales Fundamentals',         category: 'Sales',             typeformUrl: 'https://agentsonly.typeform.com/to/sales-fund',   threshold: 80, duration: 25, status: 'Published', createdAt: '2026-04-15T09:00:00', proctored: false },
+    { id: 'technical-support-tier2',    name: 'Technical Support Tier 2',   category: 'Technical support', typeformUrl: 'https://agentsonly.typeform.com/to/tech-sup-t2',  threshold: 80, duration: 30, status: 'Draft',     createdAt: '2026-05-16T11:30:00', proctored: true  },
+    { id: 'ai-evaluation',              name: 'AI Evaluation',              category: 'AI/ML',             typeformUrl: 'https://agentsonly.typeform.com/to/ai-eval',      threshold: 80, duration: 40, status: 'Published', createdAt: '2026-05-15T08:00:00', proctored: true  },
+    { id: 'content-moderation',         name: 'Content Moderation',         category: 'Data labeling',     typeformUrl: 'https://agentsonly.typeform.com/to/content-mod',  threshold: 80, duration: 20, status: 'Published', createdAt: '2026-04-04T10:00:00', proctored: false },
   ];
 })();
 
@@ -3421,15 +3421,16 @@ function renderAgentProfile(agent) {
   // Skills tests: Python + Video Editing always first, then agent's passed tests, then not-passed
   const passedSet = new Set(agent.passedTests);
   const allTests = [];
-  const testDates = ['05/22/2026','05/15/2026','04/30/2026','04/01/2026','03/15/2026','02/28/2026','01/31/2026','12/25/2025','11/15/2025','10/01/2025'];
+  const testDates = ['05/22/2026','05/15/2026','05/08/2026','05/01/2026','04/30/2026','04/24/2026','04/18/2026','04/12/2026','04/06/2026','04/01/2026'];
+  const proctoredTestDates = ['05/29/2026','05/27/2026','05/25/2026','05/23/2026','05/21/2026','05/19/2026','05/17/2026','05/16/2026','05/15/2026'];
   let ti = 0;
 
   // Pinned first 2 tests for all agents
   const pythonPassed = false; // always not passed for demo
   const pythonScore = 30;     // matches modal: 3/10 correct = 30%
-  allTests.push({name:'Python', category:'Coding', status: 'Not passed', result: '30%', date:'05/22/2026', proctored: true});
+  allTests.push({name:'Python', category:'Coding', status: 'Not passed', result: '30%', date:'05/29/2026', proctored: true});
   const vePassed = true; // always passed for demo
-  allTests.push({name:'Video Editing', category:'Video editing', status: 'Passed', result: '83%', date:'05/15/2026', proctored: false});
+  allTests.push({name:'Video Editing', category:'Video editing', status: 'Passed', result: '83%', date:'05/28/2026', proctored: false});
   ti = 2;
 
   // Agent's other passed tests (skip Python if already added)
@@ -3437,7 +3438,8 @@ function renderAgentProfile(agent) {
     if (t === 'Python Test' || t === 'Python') return; // already covered
     const cat = Object.keys(AP_ALL_TESTS).find(c => AP_ALL_TESTS[c].includes(t)) || agent.testCategories[0];
     const score = 80 + ((idx + ti * 3) % 18);
-    allTests.push({name:t, category:cat, status:'Passed', result:score+'%', date:testDates[ti % testDates.length], proctored: AP_PROCTORED_TESTS.has(t)});
+    const isProctored = AP_PROCTORED_TESTS.has(t);
+    allTests.push({name:t, category:cat, status:'Passed', result:score+'%', date:isProctored ? proctoredTestDates[ti % proctoredTestDates.length] : testDates[ti % testDates.length], proctored: isProctored});
     ti++;
   });
 
@@ -3447,7 +3449,8 @@ function renderAgentProfile(agent) {
     AP_ALL_TESTS[cat].forEach(t => {
       if (!passedSet.has(t) && notPassedCount < 4 && t !== 'Python Test') {
         const score = 45 + ((idx + ti * 7) % 30);
-        allTests.push({name:t, category:cat, status:'Not passed', result:score+'%', date:testDates[ti % testDates.length], proctored: AP_PROCTORED_TESTS.has(t)});
+        const isProctored = AP_PROCTORED_TESTS.has(t);
+        allTests.push({name:t, category:cat, status:'Not passed', result:score+'%', date:isProctored ? proctoredTestDates[ti % proctoredTestDates.length] : testDates[ti % testDates.length], proctored: isProctored});
         ti++; notPassedCount++;
       }
     });

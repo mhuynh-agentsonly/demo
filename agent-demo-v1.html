@@ -761,6 +761,9 @@
   .av-sub{display:inline-flex;align-items:center;gap:6px;margin-top:4px}
   .av-sub span{font-size:12px;line-height:16px;color:#374151}
   .av-sep{display:inline-block;width:1px;height:12px;background:#e5e7eb}
+
+  /* camera error/loading states sit on a solid light panel, never over a black video frame */
+  .ps-video .ps-vstate{background:#f3f4f6;z-index:1}
 </style>
 <script>/* ===== Lucide icons (inline, v0.4xx paths) =====
    lc(name, size, extraAttrs) -> SVG string.
@@ -2141,7 +2144,7 @@ const QZ = {
       const locked = i>st.maxPage && !(i===st.maxPage+1 && QZ.pageDone(st.maxPage));
       return '<button type="button" class="'+(i===st.page?'on':'')+'" '+(locked?'disabled':'')+' title="'+esc(p.title)+'" onclick="QZ.tryPage('+i+')">'+(i+1)+'</button>';
     }).join('');
-    h+='<span class="sep"></span><button type="button" class="split'+(st.split?' on':'')+'" id="qz-split" title="'+(st.sbs?(st.split?'Hide instructions':'Show instructions'):'Split view')+'" aria-pressed="'+st.split+'" onclick="QZ.toggleSplit()">'+lc('columns-2',16)+'</button>';
+    if (st.sbs) h+='<span class="sep"></span><button type="button" class="split'+(st.split?' on':'')+'" id="qz-split" title="'+(st.sbs?(st.split?'Hide instructions':'Show instructions'):'Split view')+'" aria-pressed="'+st.split+'" onclick="QZ.toggleSplit()">'+lc('columns-2',16)+'</button>';
     $('qz-pg').innerHTML=h;
   },
   answered: function(q){ const a=QZ.st.ans[q.id]; if(q.t==='multi') return !!(a&&a.length); if(q.t==='text') return !!(a&&a.trim()); return a!=null; },
@@ -2315,6 +2318,7 @@ const PQ = {
     PQ.devState=kind;
     if (kind==='live'){ box.innerHTML=''; box.style.display='none'; wrap.classList.add('on'); return; }
     wrap.classList.remove('on'); box.style.display='flex';
+    const pv=$('ps-vid'); if(pv && kind!=='loading'){ try{ pv.srcObject=null; }catch(e){} }
     const M={
       loading:['', '<span class="spin" style="color:#007460">'+lc('loader-circle',28)+'</span><p>Starting your camera and microphone…</p><p style="font-size:12.5px;color:#6b7280">Allow access when your browser asks.</p>'],
       blocked:[IMG.errsign,'<h4>Camera and microphone are blocked</h4><p>Allow access from the camera icon in your browser’s address bar, then click <b>Restart devices</b>.</p>'],

@@ -427,16 +427,16 @@
     border-radius: 12px;
     box-shadow: 0px 4px 6px -2px rgba(0,0,0,0.05), 0px 10px 15px -3px rgba(0,0,0,0.08);
     pointer-events: all;
-    transform: translateY(-8px);
+    transform: translateX(calc(100% + 40px));
     opacity: 0;
-    transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease;
+    transition: transform 0.32s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease;
   }
   .toast.toast-show {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
   }
   .toast.toast-hide {
-    transform: translateY(-8px);
+    transform: translateX(calc(100% + 40px));
     opacity: 0;
   }
   .toast-icon {
@@ -5334,11 +5334,20 @@ function showToast(message, type) {
   const text = document.createElement('span');
   text.className = 'toast-message';
   text.textContent = message;
-  toast.append(icon, text);
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'toast-close';
+  closeBtn.setAttribute('aria-label', 'Dismiss');
+  closeBtn.style.cssText = 'flex-shrink:0;margin-left:auto;background:none;border:none;cursor:pointer;padding:2px;color:#007460;opacity:.6;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:opacity .12s';
+  closeBtn.onmouseover = () => { closeBtn.style.opacity = '1'; };
+  closeBtn.onmouseout = () => { closeBtn.style.opacity = '.6'; };
+  closeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  toast.append(icon, text, closeBtn);
   container.appendChild(toast);
   requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('toast-show')));
   const timer = setTimeout(() => dismissToast(toast), 3800);
   toast.addEventListener('click', () => { clearTimeout(timer); dismissToast(toast); });
+  closeBtn.addEventListener('click', (e) => { e.stopPropagation(); clearTimeout(timer); dismissToast(toast); });
 }
 
 function submitAddTestModal(status) {
@@ -5596,7 +5605,7 @@ function ats1SelectEngine(type) {
     if (lmsWrap) lmsWrap.style.display = 'none';
     aiCard.querySelector('.ats1-engine-title').style.color = '#007460';
     lmsCard.querySelector('.ats1-engine-title').style.color = '#374151';
-    aiCard.querySelector('svg').setAttribute('stroke','#007460'); aiCard.querySelector('svg').style.color = '#007460';
+    aiCard.querySelector('svg').removeAttribute('stroke'); aiCard.querySelector('svg').style.color = '#007460';
     lmsCard.querySelector('svg').setAttribute('stroke','#6B7280'); lmsCard.querySelector('svg').style.color = '#6B7280';
   } else {
     lmsCard.classList.add('is-active'); aiCard.classList.remove('is-active');
@@ -5605,7 +5614,7 @@ function ats1SelectEngine(type) {
     lmsCard.querySelector('.ats1-engine-title').style.color = '#007460';
     aiCard.querySelector('.ats1-engine-title').style.color = '#374151';
     lmsCard.querySelector('svg').setAttribute('stroke','#007460'); lmsCard.querySelector('svg').style.color = '#007460';
-    aiCard.querySelector('svg').setAttribute('stroke','#6B7280'); aiCard.querySelector('svg').style.color = '#6B7280';
+    aiCard.querySelector('svg').removeAttribute('stroke'); aiCard.querySelector('svg').style.color = '#6B7280';
   }
 }
 
@@ -6002,6 +6011,7 @@ function ats2Publish() {
     threshold: window._ats2Threshold || 80, duration: window._ats2Duration || 20,
     status:'Published', createdAt: new Date().toISOString(), proctored: window._ats2Proctor || false });
   go('admin-skills-center'); renderAdminSkillsList();
+  showToast('\u201C' + name + '\u201D published successfully');
 }
 </script>
 
